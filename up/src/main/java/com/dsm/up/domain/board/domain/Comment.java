@@ -1,4 +1,4 @@
-package com.dsm.up.domain.comment;
+package com.dsm.up.domain.board.domain;
 
 import lombok.Builder;
 import lombok.Getter;

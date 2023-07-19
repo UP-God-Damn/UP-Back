@@ -1,4 +1,4 @@
-package com.dsm.up.domain.user.entity;
+package com.dsm.up.domain.user.domain;
 
 import lombok.Builder;
 import lombok.Getter;
