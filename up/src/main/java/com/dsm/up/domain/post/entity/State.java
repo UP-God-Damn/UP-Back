@@ -1,4 +1,4 @@
-package com.dsm.up.domain.entity;
+package com.dsm.up.domain.post.entity;
 
 public enum State {
     DRAFT,
