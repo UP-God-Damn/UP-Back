@@ -1,4 +1,4 @@
-package com.dsm.up.domain.board.domain;
+package com.dsm.up.domain.post.domain;
 
 import lombok.Builder;
 import lombok.Getter;

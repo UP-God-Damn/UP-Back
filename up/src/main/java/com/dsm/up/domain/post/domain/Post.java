@@ -1,6 +1,6 @@
-package com.dsm.up.domain.board.domain;
+package com.dsm.up.domain.post.domain;
 
-import com.dsm.up.domain.board.domain.type.State;
+import com.dsm.up.domain.post.domain.type.State;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
