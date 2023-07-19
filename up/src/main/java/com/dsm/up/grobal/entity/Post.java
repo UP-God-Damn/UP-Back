@@ -1,4 +1,4 @@
-package com.dsm.up.domain;
+package com.dsm.up.grobal.entity;
 
 import lombok.Builder;
 import lombok.Getter;

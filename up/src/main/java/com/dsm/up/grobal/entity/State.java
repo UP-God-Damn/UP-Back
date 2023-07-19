@@ -1,4 +1,4 @@
-package com.dsm.up.domain;
+package com.dsm.up.grobal.entity;
 
 public enum State {
     DRAFT,
