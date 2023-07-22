@@ -1,39 +1,36 @@
-package com.dsm.up.domain.post.domain;
+package com.dsm.up.domain.comment.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long Id;
+    private Long id;
+
+    @Column(nullable = false, length = 12)
+    private Long userId;
 
     @Column(nullable = false)
-    Long user_id;
-
-    @Column(nullable = false)
-    Long post_id;
+    private Long postId;
 
     @Column(nullable = false, length = 5000)
-    String content;
+    private String content;
 
     @Column(nullable = false)
-    Date create_date;
+    private LocalDate createDate;
 
     @Builder
-    public Comment(Long Id, Long user_id, Long post_id, String content, Date create_date){
-        this.Id = Id;
-        this.user_id = user_id;
-        this.post_id = post_id;
+    public Comment(Long userId, Long postId, String content, LocalDate createDate){
+        this.userId = userId;
+        this.postId = postId;
         this.content = content;
-        this.create_date = create_date;
+        this.createDate = LocalDate.now();
     }
 }

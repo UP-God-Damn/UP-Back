@@ -1,24 +1,26 @@
 package com.dsm.up.domain.post.domain;
 
-import com.dsm.up.domain.post.domain.type.State;
+import com.dsm.up.domain.post.domain.type.StateType;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     @Column(nullable = false)
-    private Long user_id;
+    private Long userId;
 
     @Column(nullable = false, length = 70)
     private String title;
@@ -31,19 +33,18 @@ public class Post {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private State state;
+    private StateType state;
 
     @Column(nullable = false)
-    private Date create_date;
+    private LocalDate createDate;
 
     @Builder
-    public Post(Long Id, Long user_id, String title, String content, String language, State state, Date create_date){
-        this.Id = Id;
-        this.user_id = user_id;
+    public Post(Long userId, String title, String content, String language, StateType state, Date creatDate){
+        this.userId = userId;
         this.title = title;
         this.content = content;
         this.language = language;
         this.state = state;
-        this.create_date = create_date;
+        this.createDate = LocalDate.now();
     }
 }

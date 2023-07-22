@@ -1,4 +1,7 @@
 package com.dsm.up.domain.post.domain.repository;
 
-public interface PostRepository {
+import com.dsm.up.domain.post.domain.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PostRepository extends JpaRepository<Post, Long> {
 }
