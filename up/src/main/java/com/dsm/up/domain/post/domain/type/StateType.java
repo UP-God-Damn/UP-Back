@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum StateType {
-    RESOLVED("해결"), UNRESOLVED("미해결");
+    SOLUTION("해결"), QUESTION("질문");
     private final String status;
 }
