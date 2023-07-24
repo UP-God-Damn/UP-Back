@@ -26,6 +26,7 @@ public class Comment {
     @Column(nullable = false)
     private LocalDate createDate;
 
+
     @Builder
     public Comment(Long userId, Long postId, String content, LocalDate createDate){
         this.userId = userId;
