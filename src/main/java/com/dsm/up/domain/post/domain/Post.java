@@ -42,7 +42,7 @@ public class Post {
     @Column(nullable = false)
     private LocalDate createDate;
 
-    @OneToMany
+    @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne

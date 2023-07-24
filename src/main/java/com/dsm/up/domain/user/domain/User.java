@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,9 +31,8 @@ public class User {
     @Column(nullable = false, length = 10)
     private String major;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id")
-    private Post psot;
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
 
     @Builder
     public User(String userId, String password, String nickname, String major) {
