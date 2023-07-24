@@ -1,11 +1,14 @@
 package com.dsm.up.domain.user.domain;
 
+import com.dsm.up.domain.post.domain.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,6 +30,9 @@ public class User {
 
     @Column(nullable = false, length = 10)
     private String major;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts = new ArrayList<>();
 
     @Builder
     public User(String userId, String password, String nickname, String major) {
