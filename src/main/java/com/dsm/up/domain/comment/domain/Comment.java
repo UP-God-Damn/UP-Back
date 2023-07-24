@@ -27,9 +27,6 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 12)
-    private Long userId;
-
     @Column(nullable = false)
     private Long postId;
 
