@@ -37,9 +37,6 @@ public class User {
     @Column(nullable = false, length = 10)
     private String major;
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts = new ArrayList<>();
-
     @Builder
     public User(String userId, String password, String nickname, String major) {
         this.userId = userId;
