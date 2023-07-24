@@ -1,6 +1,8 @@
 package com.dsm.up.domain.post.domain;
 
+import com.dsm.up.domain.comment.domain.Comment;
 import com.dsm.up.domain.post.domain.type.StateType;
+import com.dsm.up.domain.user.domain.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +10,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,6 +41,13 @@ public class Post {
 
     @Column(nullable = false)
     private LocalDate createDate;
+
+    @OneToMany
+    private List<Comment> comments = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
     public Post(Long userId, String title, String content, String language, StateType state, Date creatDate){
