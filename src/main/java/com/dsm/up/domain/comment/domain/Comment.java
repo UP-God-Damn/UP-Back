@@ -37,8 +37,7 @@ public class Comment {
     private Post post;
 
     @Builder
-    public Comment(Long userId, Long postId, String content, LocalDate createDate){
-        this.userId = userId;
+    public Comment(Long userId, Long postId, String content){
         this.postId = postId;
         this.content = content;
         this.createDate = LocalDate.now();
