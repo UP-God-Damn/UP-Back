@@ -1,4 +1,10 @@
 package com.dsm.up.global.exception;
 
-public class BaseException {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public class BaseException extends RuntimeException{
+    private ErrorCode errorCode;
 }
