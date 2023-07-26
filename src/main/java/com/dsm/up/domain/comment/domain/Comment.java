@@ -27,9 +27,6 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long postId;
-
     @Column(nullable = false, length = 5000)
     private String content;
 
@@ -45,8 +42,9 @@ public class Comment {
     private Post post;
 
     @Builder
-    public Comment(Long userId, Long postId, String content){
-        this.postId = postId;
+    public Comment(User user, Post post, String content){
+        this.user = user;
+        this.post = post;
         this.content = content;
         this.createDate = LocalDate.now();
     }
