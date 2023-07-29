@@ -23,13 +23,13 @@ public class PostExceptionHandler {
     @ExceptionHandler(NullPointerException.class)
     protected ResponseEntity<ErrorResponse> handleNullPointException(NullPointerException e) {
         log.error("[NullPointerException] : " + e.getMessage(), e);
-        return new ResponseEntity<>(new ErrorResponse(400, "Null Pointer Exception"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(400, "요청한 작업을 위해 필요한 정보가 존재하지 않아 예외가 발생하였습니다."), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ValidationException.class)
     protected ResponseEntity<ErrorResponse> handleValidationException(ValidationException e) {
         log.error("[ValidationException] : " + e.getMessage(), e);
-        return new ResponseEntity<>(new ErrorResponse(400, "Invalid value"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(400, "유효성 검사 도중 예외가 발생하였습니다"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
