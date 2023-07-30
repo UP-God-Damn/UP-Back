@@ -29,7 +29,7 @@ public class PostExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     protected ResponseEntity<ErrorResponse> handleValidationException(ValidationException e) {
         log.error("[ValidationException] : " + e.getMessage(), e);
-        return new ResponseEntity<>(new ErrorResponse(400, "유효성 검사 도중 예외가 발생하였습니다"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorResponse(400, e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
