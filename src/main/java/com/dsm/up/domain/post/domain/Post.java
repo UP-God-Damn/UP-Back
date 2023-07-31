@@ -78,6 +78,6 @@ public class Post {
         this.language = language;
         this.state = state;
         this.major = major;
-        return id;
+        return this.id;
     }
 }
