@@ -4,6 +4,7 @@ import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
 import com.dsm.up.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,6 +27,11 @@ public class PostController {
     @ResponseStatus(HttpStatus.CREATED)
     public Long create(@RequestBody @Valid PostRequest request) {
         return postService.create(request);
+    }
+
+    @PutMapping("/{id}")
+    public Long update(@PathVariable @NotNull Long id, @RequestBody @Valid PostRequest request) {
+        return postService.update(id, request);
     }
 
 }
