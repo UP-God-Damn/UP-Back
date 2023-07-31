@@ -1,6 +1,5 @@
 package com.dsm.up.domain.user.domain;
 
-import com.dsm.up.domain.post.domain.Post;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,14 +29,11 @@ public class User {
     @Column(nullable = false, length = 12)
     private String nickname;
 
-    @Column(nullable = false, length = 10)
-    private String major;
 
     @Builder
-    public User(String accountId, String password, String nickname, String major) {
+    public User(String accountId, String password, String nickname) {
         this.accountId = accountId;
         this.password = password;
         this.nickname = nickname;
-        this.major = major;
     }
 }
