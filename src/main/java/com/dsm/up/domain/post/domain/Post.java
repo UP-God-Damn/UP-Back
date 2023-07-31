@@ -71,4 +71,12 @@ public class Post {
         this.major = major;
         this.createDate = LocalDate.now();
     }
+
+    public void update(String title, String content, String language, StateType state, MajorType major) {
+        this.title = title;
+        this.content = content;
+        this.language = language;
+        this.state = state;
+        this.major = major;
+    }
 }

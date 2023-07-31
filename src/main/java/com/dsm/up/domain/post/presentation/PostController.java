@@ -28,4 +28,8 @@ public class PostController {
         return postService.create(request);
     }
 
+    @PutMapping("/update")
+    public Long update(@PathVariable @NotNull Long id, @RequestBody @Valid PostRequest request) {
+        return postService.update(id, request);
+    }
 }
