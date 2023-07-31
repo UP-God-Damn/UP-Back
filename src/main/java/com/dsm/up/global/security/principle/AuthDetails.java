@@ -1,20 +1,28 @@
 package com.dsm.up.global.security.principle;
-
-import lombok.AllArgsConstructor;
+import com.dsm.up.domain.user.domain.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthDetails implements UserDetails {
-    private String username;
-    private String password;
-    private Collection<? extends GrantedAuthority> authorities;
+
+    private final User user;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
+    }
 
     @Override
     public String getUsername() {
-        return username;
+        return user.getUserId();
     }
 
     @Override
@@ -37,14 +45,4 @@ public class AuthDetails implements UserDetails {
         return true;
     }
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
 }
-

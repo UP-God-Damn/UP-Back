@@ -1,35 +1,50 @@
 package com.dsm.up.global.security.Jwt;
 
-import io.jsonwebtoken.Claims;
+import com.dsm.up.global.security.principle.AuthDetailsService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.authentication.CachingUserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-
-import java.security.Signature;
 import java.util.Base64;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.http.HttpServletRequest;
+
+@Component
+@PropertySource("classpath:application.yml")
 public class JwtTokenProvider {
+    private static final String HEADER = "Authorization";
+    private static final String PREFIX = "Bearer";
+    private final AuthDetailsService authDetailsService;
 
-    private String secretKey = "Yoochanhongsenpaikinggod";
+    @Value("${jwt.secretKey}")
+    private String secretKey;
 
-    private Long accessTokenTime = 1800L;
-    private Long refreshTokenTime = 1209600L;
+    @Value("${jwt.accessTokenTime}")
+    private Long accessTokenTime;
+
+    @Value("${jwt.refreshTokenTime}")
+    private Long refreshTokenTime;
+
     private final UserDetailsService userDetailsService;
 
-    public JwtTokenProvider(UserDetailsService userDetailsService) {
+    public JwtTokenProvider(AuthDetailsService authDetailsService, UserDetailsService userDetailsService) {
+        this.authDetailsService = authDetailsService;
         this.userDetailsService = userDetailsService;
     }
 
     public String generateAccessToken(Authentication authentication) {
         User principal = (User) authentication.getPrincipal();
         return Jwts.builder()
-                .setSubject(principal.getUsername())
+                .setHeaderParam("typ", "JWT")
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenTime * 1000))
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .compact();
@@ -42,7 +57,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) {
+    public Authentication authentication(String token) {
         String username = Jwts.parser()
                 .setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .parseClaimsJws(token)
@@ -62,5 +77,16 @@ public class JwtTokenProvider {
         } catch (Exception e) {
             return false;
         }
+    }
+    public String parseToken(String bearerToken) {
+        if (bearerToken != null && bearerToken.startsWith(PREFIX))
+            return bearerToken.replace(PREFIX, "");
+
+        return null;
+    }
+    public String resolveToken(HttpServletRequest request) {
+        String bearer = request.getHeader(HEADER);
+
+        return parseToken(bearer);
     }
 }

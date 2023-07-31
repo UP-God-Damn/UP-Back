@@ -1,0 +1,4 @@
+jwt:
+  secretKey: ${SECRET_KEY}
+  accessTokenTime: 1800L
+  refreshTokenTime: 1209600L
