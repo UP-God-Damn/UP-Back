@@ -5,12 +5,11 @@ import com.dsm.up.domain.post.domain.repository.PostRepository;
 import com.dsm.up.domain.post.domain.type.MajorType;
 import com.dsm.up.domain.post.domain.type.StateType;
 import com.dsm.up.domain.post.exception.PostNotFoundException;
-import com.dsm.up.domain.post.exception.error.PostErrorCode;
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
+import com.dsm.up.domain.post.presentation.dto.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -41,6 +40,21 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         postRepository.delete(post);
+    }
+
+    @Transactional(readOnly = true)
+    public PostResponse getPostDetails(Long id) {
+        Post post  = postRepository.findById(id)
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
+        return PostResponse.builder()
+                .user(post.getUser())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .language(post.getLanguage())
+                .state(post.getState())
+                .major(post.getMajor())
+                .createDate(post.getCreateDate())
+                .build();
     }
 
 }
