@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static org.hibernate.tool.schema.SchemaToolingLogging.LOGGER;
+
 @Component
 @PropertySource("classpath:application.yml")
 public class JwtTokenProvider {
@@ -75,7 +77,7 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
-            //서명이 유효하지 않거나, 시크릿키가 일치하지 않으면 예외 발생, 유효성 검증 실패 처리
+            LOGGER.info("서명이 유효하지 않거나, 시크릿키가 일치하지 않습니다.");
             return false;
         }
     }

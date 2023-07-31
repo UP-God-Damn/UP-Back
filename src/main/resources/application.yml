@@ -10,8 +10,8 @@ spring:
 
   jwt:
     key: ${JWT_SECRET_KEY}
-    access: "1800"
-    refresh: "1209600"
+    access: ${JWT_ACCESS}
+    refresh: ${JWT_REFRESH}
 
 
   jpa:
