@@ -36,7 +36,7 @@ public class PostService {
         return post.update(request.getTitle(), request.getContent(), request.getLanguage(), StateType.valueOf(request.getState()), MajorType.valueOf(request.getMajor()));
     }
 
-    @Transactional
+    @Transactional //todo 삭제 요청하는 유저와 작성한 유저가 일치하는지 확인해야함
     public void delete(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
