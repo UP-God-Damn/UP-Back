@@ -34,9 +34,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long userId;
-
     @Column(nullable = false, length = 70)
     private String title;
 
@@ -62,7 +59,6 @@ public class Post {
 
     @Builder
     public Post(Long userId, String title, String content, String language, StateType state, Date creatDate){
-        this.userId = userId;
         this.title = title;
         this.content = content;
         this.language = language;

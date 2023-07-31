@@ -4,6 +4,7 @@ import com.dsm.up.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +16,7 @@ public class AuthDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userId) {
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> //UserNotFound 익셉션 .EXCEPTION);
+                .orElseThrow(() -> new RuntimeException("USERNOTFOUND"));
 
         return new AuthDetails(user);
     }

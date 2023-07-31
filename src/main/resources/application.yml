@@ -1,4 +1,20 @@
-jwt:
-  secretKey: ${SECRET_KEY}
-  accessTokenTime: 1800L
-  refreshTokenTime: 1209600L
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/up
+    username: ${DB_NAME}
+    password: ${DB_PWD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jwt:
+    key: ${JWT_SECRET_KEY}
+    access: "1800"
+    refresh: "1209600"
+
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true

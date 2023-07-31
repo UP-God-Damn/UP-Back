@@ -24,13 +24,13 @@ public class JwtTokenProvider {
     private static final String PREFIX = "Bearer";
     private final AuthDetailsService authDetailsService;
 
-    @Value("${jwt.secretKey}")
+    @Value("${spring.jwt.key}")
     private String secretKey;
 
-    @Value("${jwt.accessTokenTime}")
+    @Value("${spring.jwt.access}")
     private Long accessTokenTime;
 
-    @Value("${jwt.refreshTokenTime}")
+    @Value("${spring.jwt.refresh}")
     private Long refreshTokenTime;
 
     private final UserDetailsService userDetailsService;
@@ -75,6 +75,7 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
+            //서명이 유효하지 않거나, 시크릿키가 일치하지 않으면 예외 발생, 유효성 검증 실패 처리
             return false;
         }
     }
