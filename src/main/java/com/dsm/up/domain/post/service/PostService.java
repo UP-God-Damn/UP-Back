@@ -36,4 +36,11 @@ public class PostService {
         return post.update(request.getTitle(), request.getContent(), request.getLanguage(), StateType.valueOf(request.getState()), MajorType.valueOf(request.getMajor()));
     }
 
+    @Transactional
+    public void delete(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
+        postRepository.delete(post);
+    }
+
 }
