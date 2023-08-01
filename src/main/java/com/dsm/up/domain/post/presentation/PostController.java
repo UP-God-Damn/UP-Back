@@ -42,7 +42,7 @@ public class PostController {
         postService.delete(id);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public PostResponse getPostDetails(@PathVariable @NotNull Long id) {
         return postService.getPostDetails(id);
     }

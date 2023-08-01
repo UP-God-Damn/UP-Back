@@ -48,13 +48,13 @@ public class PostService {
         Post post  = postRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         return PostResponse.builder()
-                .user(post.getUser())
+                .user(post.getUser().getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .language(post.getLanguage())
-                .state(post.getState())
-                .major(post.getMajor())
-                .comment((Comment) post.getComments())
+                .state(post.getState().getStatus())
+                .major(post.getMajor().getMajor())
+                .comment(String.valueOf(post.getComments()))
                 .createDate(post.getCreateDate())
                 .build();
     }
