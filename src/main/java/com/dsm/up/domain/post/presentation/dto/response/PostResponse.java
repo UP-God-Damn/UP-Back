@@ -1,11 +1,10 @@
 package com.dsm.up.domain.post.presentation.dto.response;
 
 
-import com.dsm.up.domain.comment.domain.Comment;
+import com.dsm.up.domain.comment.domain.presentation.response.CommentListResponse;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
 
 @Getter
 public class PostResponse {
@@ -16,11 +15,11 @@ public class PostResponse {
     private final String language;
     private final String  state;
     private final String major;
-    private final List<Comment> comment;
+    private final CommentListResponse comment;
     private final String createDate;
 
     @Builder
-    PostResponse(String userNickname, String title, String content, String language, String  state, String major, List<Comment> comment, String createDate) {
+    PostResponse(String userNickname, String title, String content, String language, String  state, String major, CommentListResponse comment, String createDate) {
 
         this.userNickname = userNickname;
         this.title = title;

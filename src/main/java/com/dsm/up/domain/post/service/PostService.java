@@ -6,6 +6,7 @@ import com.dsm.up.domain.post.domain.type.MajorType;
 import com.dsm.up.domain.post.domain.type.StateType;
 import com.dsm.up.domain.post.exception.PostNotFoundException;
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
+import com.dsm.up.domain.comment.domain.presentation.response.CommentListResponse;
 import com.dsm.up.domain.post.presentation.dto.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,7 @@ public class PostService {
                 .language(post.getLanguage())
                 .state(post.getState().getStatus())
                 .major(post.getMajor().getMajor())
-                .comment(post.getComments())
+                .comment((CommentListResponse) post.getComments())
                 .createDate(post.getCreateDate())
                 .build();
     }
