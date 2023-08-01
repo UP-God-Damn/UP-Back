@@ -1,6 +1,5 @@
 package com.dsm.up.domain.post.service;
 
-import com.dsm.up.domain.comment.domain.Comment;
 import com.dsm.up.domain.post.domain.Post;
 import com.dsm.up.domain.post.domain.repository.PostRepository;
 import com.dsm.up.domain.post.domain.type.MajorType;
@@ -48,13 +47,13 @@ public class PostService {
         Post post  = postRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         return PostResponse.builder()
-                .user(post.getUser().getNickname())
+                .userNickname(post.getUser().getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .language(post.getLanguage())
                 .state(post.getState().getStatus())
                 .major(post.getMajor().getMajor())
-                .comment(String.valueOf(post.getComments()))
+                .comment(post.getComments())
                 .createDate(post.getCreateDate())
                 .build();
     }
