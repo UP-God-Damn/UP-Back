@@ -1,5 +1,6 @@
 package com.dsm.up.domain.post.service;
 
+import com.dsm.up.domain.comment.domain.Comment;
 import com.dsm.up.domain.post.domain.Post;
 import com.dsm.up.domain.post.domain.repository.PostRepository;
 import com.dsm.up.domain.post.domain.type.MajorType;
@@ -53,6 +54,7 @@ public class PostService {
                 .language(post.getLanguage())
                 .state(post.getState())
                 .major(post.getMajor())
+                .comment((Comment) post.getComments())
                 .createDate(post.getCreateDate())
                 .build();
     }

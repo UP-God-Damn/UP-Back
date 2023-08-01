@@ -43,7 +43,7 @@ public class PostController {
     }
 
     @GetMapping("{id}")
-    public PostResponse getPostById(@PathVariable @NotNull Long id) {
+    public PostResponse getPostDetails(@PathVariable @NotNull Long id) {
         return postService.getPostDetails(id);
     }
 
