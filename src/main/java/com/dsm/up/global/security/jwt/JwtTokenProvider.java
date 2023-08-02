@@ -1,4 +1,4 @@
-package com.dsm.up.global.security.Jwt;
+package com.dsm.up.global.security.jwt;
 
 import com.dsm.up.global.security.principle.AuthDetailsService;
 import io.jsonwebtoken.Jwts;
@@ -14,8 +14,6 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
 
 import static org.hibernate.tool.schema.SchemaToolingLogging.LOGGER;
 
@@ -59,7 +57,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public Authentication authentication(String token) {
+    public Authentication getAuthentication(String token) {
         String username = Jwts.parser()
                 .setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .parseClaimsJws(token)
@@ -87,9 +85,5 @@ public class JwtTokenProvider {
 
         return null;
     }
-    public String resolveToken(HttpServletRequest request) {
-        String bearer = request.getHeader(HEADER);
 
-        return parseToken(bearer);
-    }
 }

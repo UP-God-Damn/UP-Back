@@ -1,4 +1,4 @@
-package com.dsm.up.global.security.Jwt;
+package com.dsm.up.global.security.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -24,13 +24,22 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String bearer = jwtTokenProvider.resolveToken(request);
+        String token = resolveToken(request);
 
-        if (bearer != null) {
-            Authentication authentication = jwtTokenProvider.authentication(bearer);
+        if(token != null && jwtTokenProvider.validateToken(token)){
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
+
+    }
+
+    private String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(HEADER);
+        if (bearerToken != null && bearerToken.startsWith(PREFIX)) {
+            return bearerToken.substring(7);
+        }
+        return null;
     }
 
 }

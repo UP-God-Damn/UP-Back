@@ -1,6 +1,6 @@
 package com.dsm.up.global.security.config;
 
-import com.dsm.up.global.security.Jwt.JwtTokenProvider;
+import com.dsm.up.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,11 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/signup").permitAll() //모두
-                .antMatchers(HttpMethod.POST, "/login").permitAll() //모두
-                .antMatchers(HttpMethod.PUT, "/reissue").authenticated() //인증된 사용자만 갱신 ㅇㅇ
                 .anyRequest().authenticated()
                 .and()
                 .apply(new FilterConfig(jwtTokenProvider));
+
     }
 }
