@@ -1,10 +1,10 @@
-package com.dsm.up.global.security.config;
+package com.dsm.up.global.config.security;
 
-import com.dsm.up.global.security.jwt.JwtTokenProvider;
+import com.dsm.up.global.config.FilterConfig;
+import com.dsm.up.global.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;

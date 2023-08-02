@@ -1,6 +1,6 @@
-package com.dsm.up.global.security.jwt;
+package com.dsm.up.global.config.security.jwt;
 
-import com.dsm.up.global.security.principle.AuthDetailsService;
+import com.dsm.up.global.config.security.auth.AuthDetailsService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,11 +1,10 @@
-package com.dsm.up.global.security.principle;
+package com.dsm.up.global.config.security.auth;
 import com.dsm.up.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Map;
 
 @RequiredArgsConstructor
 public class AuthDetails implements UserDetails {
