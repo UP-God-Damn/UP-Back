@@ -64,19 +64,4 @@ public class PostService {
                 .build();
     }
 
-    @Transactional(readOnly = true)
-    public PostListResponse getAllPosts() {
-        List<Post> posts = postRepository.findAllByOrderByCreateDateDesc();
-
-        return new PostListResponse(posts.stream().map(post -> PostListResponse.PostResponse.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .userNickname(post.getUser().getNickname())
-                .state(post.getState().getStatus())
-                .major(post.getMajor().getMajor())
-                .createDate(post.getCreateDate())
-                .build()).collect(Collectors.toList()));
-
-    }
-
 }

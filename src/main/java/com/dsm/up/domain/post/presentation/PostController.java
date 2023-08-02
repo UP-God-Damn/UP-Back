@@ -48,9 +48,4 @@ public class PostController {
         return postService.getPostDetails(id);
     }
 
-    @GetMapping("/list")
-    public PostListResponse getAllPosts() {
-        return postService.getAllPosts();
-    }
-
 }
