@@ -1,7 +1,6 @@
 package com.dsm.up.domain.post.presentation;
 
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
-import com.dsm.up.domain.post.presentation.dto.response.PostListResponse;
 import com.dsm.up.domain.post.presentation.dto.response.PostResponse;
 import com.dsm.up.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
