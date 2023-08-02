@@ -47,7 +47,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostListResponse findPost(String title, String state, String Language, String major) {
-        List<Post> posts = postRepository.findAllByTitleAndStateAndLanguageAndMajor(title, state, Language, major);
+        List<Post> posts = postRepository.findAllByTitleContainingAndStateAndLanguageAndMajorOrderByCreateDateDesc(title, state, Language, major);
 
         return new PostListResponse(posts.stream().map(post -> PostListResponse.PostResponse.builder()
                 .title(post.getTitle())

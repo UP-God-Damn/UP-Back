@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface PostRepository extends CrudRepository<Post, Long> {
-    List<Post> findAllByTitleAndStateAndLanguageAndMajor(String title, String State, String Language, String major);
+    List<Post> findAllByTitleContainingAndStateAndLanguageAndMajorOrderByCreateDateDesc(String title, String State, String Language, String major);
 }
