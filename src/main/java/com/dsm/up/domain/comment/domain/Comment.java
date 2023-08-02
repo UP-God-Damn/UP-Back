@@ -47,6 +47,6 @@ public class Comment {
         this.user = user;
         this.post = post;
         this.content = content;
-        this.createDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        this.createDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy / MM / dd"));
     }
 }

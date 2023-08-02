@@ -70,7 +70,7 @@ public class Post {
         this.language = language;
         this.state = state;
         this.major = major;
-        this.createDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        this.createDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy / MM / dd"));
     }
 
     public Long update(String title, String content, String language, StateType state, MajorType major) {
