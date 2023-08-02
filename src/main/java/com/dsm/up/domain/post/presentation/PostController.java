@@ -1,6 +1,7 @@
 package com.dsm.up.domain.post.presentation;
 
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
+import com.dsm.up.domain.post.presentation.dto.response.PostListResponse;
 import com.dsm.up.domain.post.presentation.dto.response.PostResponse;
 import com.dsm.up.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,11 @@ public class PostController {
     @GetMapping("/{id}")
     public PostResponse getPostDetails(@PathVariable @NotNull Long id) {
         return postService.getPostDetails(id);
+    }
+
+    @GetMapping("/list")
+    public PostListResponse getAllPosts() {
+        return postService.getAllPosts();
     }
 
 }

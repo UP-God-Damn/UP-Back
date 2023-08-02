@@ -1,5 +1,6 @@
 package com.dsm.up.domain.post.service;
 
+import com.dsm.up.domain.comment.domain.Comment;
 import com.dsm.up.domain.post.domain.Post;
 import com.dsm.up.domain.post.domain.repository.PostRepository;
 import com.dsm.up.domain.post.domain.type.MajorType;
@@ -7,10 +8,14 @@ import com.dsm.up.domain.post.domain.type.StateType;
 import com.dsm.up.domain.post.exception.PostNotFoundException;
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
 import com.dsm.up.domain.comment.domain.presentation.response.CommentListResponse;
+import com.dsm.up.domain.post.presentation.dto.response.PostListResponse;
 import com.dsm.up.domain.post.presentation.dto.response.PostResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -54,9 +59,24 @@ public class PostService {
                 .language(post.getLanguage())
                 .state(post.getState().getStatus())
                 .major(post.getMajor().getMajor())
-                .comment((CommentListResponse) post.getComments())
+                //.comment((CommentListResponse) post.getComments())
                 .createDate(post.getCreateDate())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public PostListResponse getAllPosts() {
+        List<Post> posts = postRepository.findAllByOrderByCreateDateDesc();
+
+        return new PostListResponse(posts.stream().map(post -> PostListResponse.PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .userNickname(post.getUser().getNickname())
+                .state(post.getState().getStatus())
+                .major(post.getMajor().getMajor())
+                .createDate(post.getCreateDate())
+                .build()).collect(Collectors.toList()));
+
     }
 
 }
