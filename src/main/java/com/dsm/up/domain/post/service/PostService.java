@@ -5,12 +5,14 @@ import com.dsm.up.domain.post.domain.repository.PostRepository;
 import com.dsm.up.domain.post.domain.type.MajorType;
 import com.dsm.up.domain.post.domain.type.StateType;
 import com.dsm.up.domain.post.exception.PostNotFoundException;
-import com.dsm.up.domain.post.exception.error.PostErrorCode;
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
+import com.dsm.up.domain.post.presentation.dto.response.PostListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -41,6 +43,19 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         postRepository.delete(post);
+    }
+
+    @Transactional(readOnly = true)
+    public PostListResponse findPost(String title, String state, String Language, String major) {
+        List<Post> posts = postRepository.findAllByTitleAndStateAndLanguageAndMajor(title, state, Language, major);
+
+        return new PostListResponse(posts.stream().map(post -> PostListResponse.PostResponse.builder()
+                .title(post.getTitle())
+                .userNickname(post.getUser().getNickname())
+                .state(post.getState().getStatus())
+                .major(post.getMajor().getMajor())
+                .createDate(post.getCreateDate())
+                .build()).collect(Collectors.toList()));
     }
 
 }

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class Post {
     private MajorType major;
 
     @Column(nullable = false)
-    private LocalDate createDate;
+    private String  createDate;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
@@ -62,14 +63,14 @@ public class Post {
     private User user;
 
     @Builder
-    public Post(User user, String title, String content, String language, StateType state, MajorType major){
+    public Post(User user, String title, String content, String language, StateType state, MajorType major, String createDate){
         this.user = user;
         this.title = title;
         this.content = content;
         this.language = language;
         this.state = state;
         this.major = major;
-        this.createDate = LocalDate.now();
+        this.createDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
     }
 
     public Long update(String title, String content, String language, StateType state, MajorType major) {
