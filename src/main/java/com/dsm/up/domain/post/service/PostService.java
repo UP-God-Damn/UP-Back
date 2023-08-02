@@ -53,8 +53,14 @@ public class PostService {
                 .language(post.getLanguage())
                 .state(post.getState().getStatus())
                 .major(post.getMajor().getMajor())
-                //.comment((CommentListResponse) post.getComments())
-                .createDate(post.getCreateDate())
+                .comments(post.getComments().stream().map( comment -> {
+                        return CommentResponse.builder()
+                            .userNickname(comment.getUser().getNickname())
+                            .content(comment.getContent())
+                            .createDate(comment.getCreateDate())
+                            .build();
+                    }
+                ).collect(Collectors.toList()))
                 .build();
     }
 
