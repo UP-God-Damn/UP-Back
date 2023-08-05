@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,8 +47,42 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public PostListResponse findPost(String title, String state, String Language, String major) {
-        List<Post> posts = postRepository.findAllByTitleContainingAndStateAndLanguageAndMajorOrderByCreateDateDesc(title, state, Language, major);
+    public PostListResponse findPost(String title, String state, String major) {
+        List<Post> posts = new ArrayList<>();
+
+        if (state.equals("SOLUTION")) {
+            if (title.isEmpty()) {
+                if (major.isEmpty()) posts = postRepository.findAllByStateOrderByCreateDateDesc(StateType.SOLUTION);
+                else
+                    posts = postRepository.findAllByStateAndMajorOrderByCreateDateDesc(StateType.SOLUTION, MajorType.valueOf(major));
+            } else {
+                if (major.isEmpty())
+                    posts = postRepository.findAllByStateAndTitleContainingOrderByCreateDateDesc(StateType.SOLUTION, title);
+                else
+                    posts = postRepository.findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType.SOLUTION, title, MajorType.valueOf(major));
+            }
+        } else if (state.equals("QUESTION")) {
+            if (title.isEmpty()) {
+                if (major.isEmpty()) posts = postRepository.findAllByStateOrderByCreateDateDesc(StateType.QUESTION);
+                else
+                    posts = postRepository.findAllByStateAndMajorOrderByCreateDateDesc(StateType.QUESTION, MajorType.valueOf(major));
+            } else {
+                if (major.isEmpty())
+                    posts = postRepository.findAllByStateAndTitleContainingOrderByCreateDateDesc(StateType.QUESTION, title);
+                else
+                    posts = postRepository.findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType.QUESTION, title, MajorType.valueOf(major));
+            }
+        } else {
+            if (title.isEmpty()) {
+                if (major.isEmpty()) posts = postRepository.findAllByOrderByCreateDateDesc();
+                else posts = postRepository.findAllByMajorOrderByCreateDateDesc(MajorType.valueOf(major));
+            } else {
+                if (major.isEmpty()) posts = postRepository.findAllByTitleContainingOrderByCreateDateDesc(title);
+                else
+                    posts = postRepository.findAllByTitleContainingAndMajorOrderByCreateDateDesc(title, MajorType.valueOf(major));
+            }
+
+        }
 
         return new PostListResponse(posts.stream().map(post -> PostListResponse.PostResponse.builder()
                 .title(post.getTitle())
@@ -55,7 +90,7 @@ public class PostService {
                 .state(post.getState().getStatus())
                 .major(post.getMajor().getMajor())
                 .createDate(post.getCreateDate())
-                .build()).collect(Collectors.toList()));
+                .build()).collect(Collectors.toList()), posts.size());
     }
 
 }

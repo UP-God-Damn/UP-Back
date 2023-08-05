@@ -44,8 +44,8 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public PostListResponse findPost(@RequestParam(value = "title") String title, @RequestParam(value = "state") String state, @RequestParam(value = "language") String language, @RequestParam(value = "major") String major) {
-        return postService.findPost(title, state, language, major);
+    public PostListResponse findPost(@RequestParam(value = "title") String title, @RequestParam(value = "state") String state, @RequestParam(value = "major") String major) {
+        return postService.findPost(title, state, major);
     }
 
 
