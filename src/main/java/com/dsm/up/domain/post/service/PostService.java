@@ -50,41 +50,18 @@ public class PostService {
     public PostListResponse findPost(String title, String state, String major) {
         List<Post> posts = new ArrayList<>();
 
-        if (state.equals("SOLUTION")) {
-            if (title.isEmpty()) {
-                if (major.isEmpty()) posts = postRepository.findAllByStateOrderByCreateDateDesc(StateType.SOLUTION);
-                else
-                    posts = postRepository.findAllByStateAndMajorOrderByCreateDateDesc(StateType.SOLUTION, MajorType.valueOf(major));
-            } else {
-                if (major.isEmpty())
-                    posts = postRepository.findAllByStateAndTitleContainingOrderByCreateDateDesc(StateType.SOLUTION, title);
-                else
-                    posts = postRepository.findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType.SOLUTION, title, MajorType.valueOf(major));
-            }
-        } else if (state.equals("QUESTION")) {
-            if (title.isEmpty()) {
-                if (major.isEmpty()) posts = postRepository.findAllByStateOrderByCreateDateDesc(StateType.QUESTION);
-                else
-                    posts = postRepository.findAllByStateAndMajorOrderByCreateDateDesc(StateType.QUESTION, MajorType.valueOf(major));
-            } else {
-                if (major.isEmpty())
-                    posts = postRepository.findAllByStateAndTitleContainingOrderByCreateDateDesc(StateType.QUESTION, title);
-                else
-                    posts = postRepository.findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType.QUESTION, title, MajorType.valueOf(major));
-            }
-        } else {
-            if (title.isEmpty()) {
-                if (major.isEmpty()) posts = postRepository.findAllByOrderByCreateDateDesc();
-                else posts = postRepository.findAllByMajorOrderByCreateDateDesc(MajorType.valueOf(major));
-            } else {
-                if (major.isEmpty()) posts = postRepository.findAllByTitleContainingOrderByCreateDateDesc(title);
-                else
-                    posts = postRepository.findAllByTitleContainingAndMajorOrderByCreateDateDesc(title, MajorType.valueOf(major));
-            }
+        if (state.isEmpty() && major.isEmpty())
+            posts = postRepository.findAllByTitleContainingOrderByCreateDateDesc(title);
+        else if (major.isEmpty())
+            posts = postRepository.findAllByStateAndTitleContainingOrderByCreateDateDesc(StateType.valueOf(state), title);
+        else if (state.isEmpty())
+            posts = postRepository.findAllByTitleContainingAndMajorOrderByCreateDateDesc(title, MajorType.valueOf(major));
+        else
+            posts = postRepository.findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType.valueOf(state), title, MajorType.valueOf(major));
 
-        }
 
         return new PostListResponse(posts.stream().map(post -> PostListResponse.PostResponse.builder()
+                .id(post.getId())
                 .title(post.getTitle())
                 .userNickname(post.getUser().getNickname())
                 .state(post.getState().getStatus())
