@@ -15,13 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.dsm.up.domain.post.presentation.dto.response.PostListResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -56,25 +52,26 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public PostResponse getPostDetails(Long id) {
-        Post post  = postRepository.findById(id).orElseThrow(() -> PostNotFoundException.EXCEPTION);
+        Post post = postRepository.findById(id).orElseThrow(() -> PostNotFoundException.EXCEPTION);
 
         return PostResponse.builder()
-                .userNickname(post.getUser().getNickname())
-                .createDate(post.getCreateDate())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .language(post.getLanguage())
-                .state(post.getState().getStatus())
-                .major(post.getMajor().getMajor())
-                .comments(post.getComments().stream().map( comment -> {
-                        return CommentResponse.builder()
-                            .userNickname(comment.getUser().getNickname())
-                            .content(comment.getContent())
-                            .createDate(comment.getCreateDate())
-                            .build();
-                    }
-                ).collect(Collectors.toList()))
-                .build();
+            .userNickname(post.getUser().getNickname())
+            .createDate(post.getCreateDate())
+            .title(post.getTitle())
+            .content(post.getContent())
+            .language(post.getLanguage())
+            .state(post.getState().getStatus())
+            .major(post.getMajor().getMajor())
+            .comments(post.getComments().stream().map(comment -> {
+                    return CommentResponse.builder()
+                        .userNickname(comment.getUser().getNickname())
+                        .content(comment.getContent())
+                        .createDate(comment.getCreateDate())
+                        .build();
+                }
+            ).collect(Collectors.toList()))
+            .build();
+    }
 
   public PostListResponse findPost(String title, String state, String major) {
         List<Post> posts = new ArrayList<>();
