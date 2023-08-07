@@ -1,4 +1,4 @@
-package com.dsm.up.domain.comment.domain.presentation.response;
+package com.dsm.up.domain.comment.presentation.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
