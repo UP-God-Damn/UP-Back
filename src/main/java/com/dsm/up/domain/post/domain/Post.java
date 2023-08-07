@@ -54,7 +54,7 @@ public class Post {
 
     @Column(nullable = false)
     private String createDate;
-
+  
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
