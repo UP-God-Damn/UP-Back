@@ -4,6 +4,7 @@ import com.dsm.up.domain.post.domain.Post;
 import com.dsm.up.domain.user.domain.User;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +32,7 @@ public class Comment {
     private String content;
 
     @Column(nullable = false)
-    private LocalDate createDate;
+    private String  createDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -46,6 +47,6 @@ public class Comment {
         this.user = user;
         this.post = post;
         this.content = content;
-        this.createDate = LocalDate.now();
+        this.createDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy / MM / dd"));
     }
 }

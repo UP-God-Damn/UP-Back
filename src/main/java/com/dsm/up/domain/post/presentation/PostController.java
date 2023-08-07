@@ -1,6 +1,7 @@
 package com.dsm.up.domain.post.presentation;
 
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
+import com.dsm.up.domain.post.presentation.dto.response.PostResponse;
 import com.dsm.up.domain.post.presentation.dto.response.PostListResponse;
 import com.dsm.up.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -43,10 +44,14 @@ public class PostController {
         postService.delete(id);
     }
 
+    @GetMapping("/{id}")
+    public PostResponse getPostDetails(@PathVariable @NotNull Long id) {
+        return postService.getPostDetails(id);
+    }
+
     @GetMapping("/search")
     public PostListResponse findPost(@RequestParam(value = "title") String title, @RequestParam(value = "state") String state, @RequestParam(value = "major") String major) {
         return postService.findPost(title, state, major);
     }
-
 
 }
