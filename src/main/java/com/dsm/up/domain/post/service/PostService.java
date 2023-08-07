@@ -60,14 +60,14 @@ public class PostService {
             posts = postRepository.findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType.valueOf(state), title, MajorType.valueOf(major));
 
 
-        return new PostListResponse(posts.stream().map(post -> PostListResponse.PostResponse.builder()
+        return new PostListResponse(posts.size(), posts.stream().map(post -> PostListResponse.PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
                 .userNickname(post.getUser().getNickname())
                 .state(post.getState().getStatus())
                 .major(post.getMajor().getMajor())
                 .createDate(post.getCreateDate())
-                .build()).collect(Collectors.toList()), posts.size());
+                .build()).collect(Collectors.toList()));
     }
 
 }

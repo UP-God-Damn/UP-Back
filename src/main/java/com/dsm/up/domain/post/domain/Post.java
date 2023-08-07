@@ -63,7 +63,7 @@ public class Post {
     private User user;
 
     @Builder
-    public Post(User user, String title, String content, String language, StateType state, MajorType major, String createDate){
+    public Post(User user, String title, String content, String language, StateType state, MajorType major){
         this.user = user;
         this.title = title;
         this.content = content;
