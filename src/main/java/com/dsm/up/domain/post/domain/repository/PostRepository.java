@@ -11,12 +11,6 @@ public interface PostRepository extends CrudRepository<Post, Long> {
 
     List<Post> findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType state, String title, MajorType major);
     List<Post> findAllByStateAndTitleContainingOrderByCreateDateDesc(StateType state, String title);
-    List<Post> findAllByStateAndMajorOrderByCreateDateDesc(StateType state, MajorType major);
-    List<Post> findAllByStateOrderByCreateDateDesc(StateType state);
-
     List<Post> findAllByTitleContainingAndMajorOrderByCreateDateDesc(String title, MajorType major);
     List<Post> findAllByTitleContainingOrderByCreateDateDesc(String title);
-    List<Post> findAllByMajorOrderByCreateDateDesc(MajorType major);
-    List<Post> findAllByOrderByCreateDateDesc();
-
 }
