@@ -5,12 +5,15 @@ import com.dsm.up.domain.post.domain.repository.PostRepository;
 import com.dsm.up.domain.post.domain.type.MajorType;
 import com.dsm.up.domain.post.domain.type.StateType;
 import com.dsm.up.domain.post.exception.PostNotFoundException;
-import com.dsm.up.domain.post.exception.error.PostErrorCode;
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
+import com.dsm.up.domain.post.presentation.dto.response.PostListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -41,6 +44,30 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
         postRepository.delete(post);
+    }
+
+    @Transactional(readOnly = true)
+    public PostListResponse findPost(String title, String state, String major) {
+        List<Post> posts = new ArrayList<>();
+
+        if (state.isEmpty() && major.isEmpty())
+            posts = postRepository.findAllByTitleContainingOrderByCreateDateDesc(title);
+        else if (major.isEmpty())
+            posts = postRepository.findAllByStateAndTitleContainingOrderByCreateDateDesc(StateType.valueOf(state), title);
+        else if (state.isEmpty())
+            posts = postRepository.findAllByTitleContainingAndMajorOrderByCreateDateDesc(title, MajorType.valueOf(major));
+        else
+            posts = postRepository.findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType.valueOf(state), title, MajorType.valueOf(major));
+
+
+        return new PostListResponse(posts.size(), posts.stream().map(post -> PostListResponse.PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .userNickname(post.getUser().getNickname())
+                .state(post.getState().getStatus())
+                .major(post.getMajor().getMajor())
+                .createDate(post.getCreateDate())
+                .build()).collect(Collectors.toList()));
     }
 
 }
