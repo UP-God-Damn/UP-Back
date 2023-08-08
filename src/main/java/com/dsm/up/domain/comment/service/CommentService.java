@@ -17,10 +17,11 @@ public class CommentService {
     public Long creat(CommentRequest request) {
         return commentRepository.save(Comment.builder()
                 .content(request.getContent())
+                //.user()
                 .build()).getId();
     }
 
-    @Transactional
+    @Transactional //comment 작성자와 일치하는지 확인
     public Long update(Long id, CommentRequest request) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> CommentNotFoundException.EXCEPTION);
@@ -28,7 +29,7 @@ public class CommentService {
         return comment.update(request.getContent());
     }
 
-    @Transactional
+    @Transactional //comment 작성자와 일치하는지 확인
     public void delete(Long id) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> CommentNotFoundException.EXCEPTION);
