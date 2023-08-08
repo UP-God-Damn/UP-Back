@@ -3,7 +3,7 @@ package com.dsm.up.domain.post.presentation.dto.response;
 
 import java.util.List;
 
-import com.dsm.up.domain.comment.domain.presentation.response.CommentResponse;
+import com.dsm.up.domain.comment.presentation.dto.response.CommentResponse;
 import lombok.Builder;
 import lombok.Getter;
 

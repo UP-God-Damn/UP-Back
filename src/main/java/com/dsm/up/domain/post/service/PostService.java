@@ -2,8 +2,7 @@ package com.dsm.up.domain.post.service;
 
 import java.util.stream.Collectors;
 
-import com.dsm.up.domain.comment.domain.Comment;
-import com.dsm.up.domain.comment.domain.presentation.response.CommentResponse;
+import com.dsm.up.domain.comment.presentation.dto.response.CommentResponse;
 import com.dsm.up.domain.post.domain.Post;
 import com.dsm.up.domain.post.domain.repository.PostRepository;
 import com.dsm.up.domain.post.domain.type.MajorType;

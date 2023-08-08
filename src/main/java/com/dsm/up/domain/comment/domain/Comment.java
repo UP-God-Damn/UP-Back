@@ -32,7 +32,7 @@ public class Comment {
     private String content;
 
     @Column(nullable = false)
-    private String  createDate;
+    private String createDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -48,5 +48,10 @@ public class Comment {
         this.post = post;
         this.content = content;
         this.createDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy / MM / dd"));
+    }
+
+    public Long update(String content) {
+        this.content = content;
+        return this.id;
     }
 }
