@@ -1,4 +1,4 @@
-package com.dsm.up.global.exception.handler;
+/*package com.dsm.up.global.exception.handler;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -19,3 +19,4 @@ abstract class AuthenticationEntryPointImpl implements AuthenticationEntryPoint 
 
 
 }
+*/
