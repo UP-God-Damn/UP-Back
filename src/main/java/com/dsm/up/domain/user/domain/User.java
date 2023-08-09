@@ -37,7 +37,7 @@ public class User {
         this.nickname = nickname;
     }
 
-    public String getUserId() {
+    public String getAccountId() {
         return accountId;
     }
 }
