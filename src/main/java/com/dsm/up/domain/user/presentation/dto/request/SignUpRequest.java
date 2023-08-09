@@ -1,11 +1,11 @@
 package com.dsm.up.domain.user.presentation.dto.request;
 
-import lombok.Data;
+import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Data
+@Getter
 public class SignUpRequest {
     @NotBlank
     @Size(min = 2, max = 12)
