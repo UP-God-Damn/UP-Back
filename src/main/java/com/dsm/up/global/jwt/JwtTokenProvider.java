@@ -2,6 +2,7 @@ package com.dsm.up.global.jwt;
 
 import com.dsm.up.global.jwt.auth.AuthDetailsService;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import static org.hibernate.tool.schema.SchemaToolingLogging.LOGGER;
 
+@Slf4j
 @Component
 @PropertySource("classpath:application.yml")
 public class JwtTokenProvider {
@@ -42,7 +44,7 @@ public class JwtTokenProvider {
     public String generateAccessToken(Authentication authentication) {
         User principal = (User) authentication.getPrincipal();
         return Jwts.builder()
-                .setHeaderParam("typ", "JWT")
+                .setHeaderParam("typ", "Access")
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenTime * 1000))
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
@@ -51,6 +53,7 @@ public class JwtTokenProvider {
 
     public String generateRefreshToken() {
         return Jwts.builder()
+                .setHeaderParam("typ", "Refresh")
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenTime * 1000))
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .compact();
@@ -74,13 +77,13 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            LOGGER.info("잘못된 JWT 서명입니다.");
+            log.info("잘못된 JWT 서명입니다.");
         } catch (ExpiredJwtException e) {
-            LOGGER.info("JWT 토큰이 만료되었습니다.");
+            log.info("JWT 토큰이 만료되었습니다.");
         } catch (UnsupportedJwtException e) {
-            LOGGER.info("지원하지 않는 JWT 토큰입니다.");
+            log.info("지원하지 않는 JWT 토큰입니다.");
         } catch (IllegalArgumentException e) {
-            LOGGER.info("잘못된 JWT 토큰입니다.");
+            log.info("잘못된 JWT 토큰입니다.");
         }
         return false;
     }
@@ -88,7 +91,6 @@ public class JwtTokenProvider {
     public String parseToken(String bearerToken) {
         if (bearerToken != null && bearerToken.startsWith(PREFIX))
             return bearerToken.replace(PREFIX, "");
-
         return null;
     }
 

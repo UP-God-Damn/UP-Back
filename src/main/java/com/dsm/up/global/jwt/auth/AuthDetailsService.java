@@ -14,7 +14,7 @@ public class AuthDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userId) {
         return userRepository.findByUserId(userId)
-                .map(user -> new AuthDetails(user))
+                .map(AuthDetails::new)
                 .orElseThrow(() -> new RuntimeException("USERNOTFOUND"));
     }
 }
