@@ -1,8 +1,7 @@
-package com.dsm.up.global.config.security.jwt;
+package com.dsm.up.global.jwt;
 
-import com.dsm.up.global.config.security.auth.AuthDetailsService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.dsm.up.global.auth.AuthDetailsService;
+import io.jsonwebtoken.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -74,11 +73,18 @@ public class JwtTokenProvider {
                     .setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes()))
                     .parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
-            LOGGER.info("서명이 유효하지 않거나, 시크릿키가 일치하지 않습니다.");
-            return false;
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            LOGGER.info("잘못된 JWT 서명입니다.");
+        } catch (ExpiredJwtException e) {
+            LOGGER.info("JWT 토큰이 만료되었습니다.");
+        } catch (UnsupportedJwtException e) {
+            LOGGER.info("지원하지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            LOGGER.info("잘못된 JWT 토큰입니다.");
         }
+        return false;
     }
+
     public String parseToken(String bearerToken) {
         if (bearerToken != null && bearerToken.startsWith(PREFIX))
             return bearerToken.replace(PREFIX, "");

@@ -1,7 +1,7 @@
-package com.dsm.up.global.config.security;
+package com.dsm.up.global.config;
 
 import com.dsm.up.global.config.FilterConfig;
-import com.dsm.up.global.config.security.jwt.JwtTokenProvider;
+import com.dsm.up.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

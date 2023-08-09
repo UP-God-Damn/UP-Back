@@ -1,5 +1,4 @@
-package com.dsm.up.global.config.security.auth;
-import com.dsm.up.domain.user.domain.User;
+package com.dsm.up.global.auth;
 import com.dsm.up.domain.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,9 +13,9 @@ public class AuthDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) {
-        User user = userRepository.findByUserId(userId)
+        return userRepository.findByUserId(userId)
+                .map(user -> new AuthDetails(user))
                 .orElseThrow(() -> new RuntimeException("USERNOTFOUND"));
-
-        return new AuthDetails(user);
     }
 }
+

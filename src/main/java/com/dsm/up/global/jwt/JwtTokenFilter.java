@@ -1,4 +1,4 @@
-package com.dsm.up.global.config.security.jwt;
+package com.dsm.up.global.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
