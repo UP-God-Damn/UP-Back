@@ -1,21 +1,20 @@
 package com.dsm.up.global.jwt;
 
-import com.dsm.up.global.jwt.auth.AuthDetailsService;
+import com.dsm.up.domain.user.domain.RefreshToken;
+import com.dsm.up.domain.user.domain.repository.RefreshTokenRepository;
+import com.dsm.up.global.jwt.exception.TokenUnauthorizedException;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.Base64;
 import java.util.Date;
-
+//뭐지..?
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-
-import static org.hibernate.tool.schema.SchemaToolingLogging.LOGGER;
 
 @Slf4j
 @Component
@@ -23,7 +22,6 @@ import static org.hibernate.tool.schema.SchemaToolingLogging.LOGGER;
 public class JwtTokenProvider {
     private static final String HEADER = "Authorization";
     private static final String PREFIX = "Bearer";
-    private final AuthDetailsService authDetailsService;
 
     @Value("${spring.jwt.key}")
     private String secretKey;
@@ -35,14 +33,14 @@ public class JwtTokenProvider {
     private Long refreshTokenTime;
 
     private final UserDetailsService userDetailsService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
-    public JwtTokenProvider(AuthDetailsService authDetailsService, UserDetailsService userDetailsService) {
-        this.authDetailsService = authDetailsService;
+    public JwtTokenProvider(RefreshTokenRepository refreshTokenRepository, UserDetailsService userDetailsService) {
+        this.refreshTokenRepository = refreshTokenRepository;
         this.userDetailsService = userDetailsService;
     }
 
-    public String generateAccessToken(Authentication authentication) {
-        User principal = (User) authentication.getPrincipal();
+    public String generateAccessToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "Access")
                 .signWith(SignatureAlgorithm.HS256, secretKey)
@@ -51,7 +49,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String generateRefreshToken() {
+    public String generateRefreshToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "Refresh")
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenTime * 1000))
@@ -88,10 +86,27 @@ public class JwtTokenProvider {
         return false;
     }
 
-    public String parseToken(String bearerToken) {
-        if (bearerToken != null && bearerToken.startsWith(PREFIX))
-            return bearerToken.replace(PREFIX, "");
-        return null;
+    public String getRefreshToken(String accountId) {
+        return refreshTokenRepository.findByAccountId(accountId)
+                .orElseThrow(() -> TokenUnauthorizedException.EXCEPTION)
+                .getRefreshToken();
+    }
+
+    private Claims getBody(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+    }
+
+    private String subject(String token) {
+        try {
+            return getBody(token).getSubject();
+        } catch (Exception e) {
+            throw TokenUnauthorizedException.EXCEPTION;
+        }
+    }
+
+    private JwsHeader getHeader(String token) {
+        return Jwts.parser().setSigningKey(secretKey)
+                .parseClaimsJws(token).getHeader();
     }
 
 }
