@@ -1,17 +1,22 @@
 package com.dsm.up.global.jwt;
 
-import com.dsm.up.domain.user.domain.RefreshToken;
 import com.dsm.up.domain.user.domain.repository.RefreshTokenRepository;
 import com.dsm.up.global.jwt.exception.TokenUnauthorizedException;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwsHeader;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.Base64;
 import java.util.Date;
-//뭐지..?
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -33,16 +38,14 @@ public class JwtTokenProvider {
     private Long refreshTokenTime;
 
     private final UserDetailsService userDetailsService;
-    private final RefreshTokenRepository refreshTokenRepository;
-
-    public JwtTokenProvider(RefreshTokenRepository refreshTokenRepository, UserDetailsService userDetailsService) {
-        this.refreshTokenRepository = refreshTokenRepository;
+    public JwtTokenProvider(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
     public String generateAccessToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "Access")
+                .claim("accountId", accountId)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenTime * 1000))
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
@@ -52,10 +55,12 @@ public class JwtTokenProvider {
     public String generateRefreshToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "Refresh")
+                .claim("accountId", accountId)
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenTime * 1000))
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .compact();
     }
+
 
     public Authentication getAuthentication(String token) {
         String username = Jwts.parser()
@@ -84,12 +89,6 @@ public class JwtTokenProvider {
             log.info("잘못된 JWT 토큰입니다.");
         }
         return false;
-    }
-
-    public String getRefreshToken(String accountId) {
-        return refreshTokenRepository.findByAccountId(accountId)
-                .orElseThrow(() -> TokenUnauthorizedException.EXCEPTION)
-                .getRefreshToken();
     }
 
     private Claims getBody(String token) {

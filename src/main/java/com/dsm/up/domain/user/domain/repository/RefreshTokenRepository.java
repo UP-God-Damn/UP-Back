@@ -1,10 +1,8 @@
 package com.dsm.up.domain.user.domain.repository;
 
 import com.dsm.up.domain.user.domain.RefreshToken;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
-@Repository
-public interface RefreshTokenRepository extends JpaRepository<RefreshToken, String> {
+public interface RefreshTokenRepository extends CrudRepository<RefreshToken, String> {
     Optional<RefreshToken> findByAccountId(String accountId);}

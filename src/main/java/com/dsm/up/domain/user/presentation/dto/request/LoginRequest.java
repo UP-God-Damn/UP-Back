@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
-public class LogInRequest {
+public class LoginRequest {
     @NotBlank
     @Size(min = 6, max = 12)
     private String accountId;

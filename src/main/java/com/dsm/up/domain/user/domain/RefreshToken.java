@@ -1,11 +1,15 @@
 package com.dsm.up.domain.user.domain;
 
+import com.dsm.up.domain.user.domain.repository.RefreshTokenRepository;
+import com.dsm.up.global.jwt.exception.TokenUnauthorizedException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,10 +22,6 @@ public class RefreshToken {
     @Column(nullable = false)
     private String refreshToken;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Column(name = "account_id", nullable = false)
     private String accountId;
 
@@ -32,9 +32,13 @@ public class RefreshToken {
         this.accountId = accountId;
     }
 
-
     public String getAccountId() {
         return this.accountId;
     }
-}
 
+    public static String getRefreshToken(RefreshTokenRepository refreshTokenRepository, String accountId) {
+        return refreshTokenRepository.findByAccountId(accountId)
+                .orElseThrow(() -> TokenUnauthorizedException.EXCEPTION)
+                .getRefreshToken();
+    }
+}
