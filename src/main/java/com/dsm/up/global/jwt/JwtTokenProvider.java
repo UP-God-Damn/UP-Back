@@ -45,7 +45,7 @@ public class JwtTokenProvider {
     public String generateAccessToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "Access")
-                .claim("accountId", accountId)
+                .setSubject(accountId)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenTime * 1000))
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
@@ -55,7 +55,7 @@ public class JwtTokenProvider {
     public String generateRefreshToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "Refresh")
-                .claim("accountId", accountId)
+                .setSubject(accountId)
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenTime * 1000))
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .compact();
