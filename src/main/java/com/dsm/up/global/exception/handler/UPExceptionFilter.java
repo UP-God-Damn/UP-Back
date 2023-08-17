@@ -22,7 +22,7 @@ public class UPExceptionFilter extends OncePerRequestFilter {
         } catch (BaseException e) {
             response.setStatus(e.getErrorCode().getStatus());
 
-            response.setContentType("application/json\"");
+            response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
 
             ErrorResponse errorResponse = new ErrorResponse(e.getErrorCode().getStatus(), e.getErrorCode().getMessage());

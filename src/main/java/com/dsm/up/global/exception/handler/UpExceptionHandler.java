@@ -12,10 +12,10 @@ import javax.validation.ValidationException;
 
 @Slf4j
 @RestControllerAdvice
-public class PostExceptionHandler {
+public class UpExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
-    protected ResponseEntity<ErrorResponse> handlerDcsException (BaseException e) {
+    protected ResponseEntity<ErrorResponse> UphandlerException(BaseException e) {
         log.error("[UP] : " + e.getMessage(), e);
         return new ResponseEntity<>(new ErrorResponse(e.getErrorCode().getStatus(), e.getErrorCode().getMessage()), HttpStatus.valueOf(e.getErrorCode().getStatus()));
     }
