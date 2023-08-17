@@ -1,21 +1,23 @@
 package com.dsm.up.global.config;
 
-import com.dsm.up.global.config.FilterConfig;
+import com.dsm.up.global.exception.handler.AuthenticationEntryPointImpl;
 import com.dsm.up.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
+
+    private final AuthenticationEntryPointImpl authenticationEntryPoint;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
@@ -23,18 +25,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .authorizeRequests()
-                .anyRequest().authenticated()
-                .and()
-                .apply(new FilterConfig(jwtTokenProvider));
-
+    @Bean
+    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+            .cors().and()
+            .formLogin().disable()
+            .csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .httpBasic().disable()
+            .authorizeRequests()
+            .antMatchers("/user/*").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .httpBasic().authenticationEntryPoint(authenticationEntryPoint)
+            .and().apply(new FilterConfig(jwtTokenProvider))
+            .and().build();
     }
+
 }
