@@ -31,8 +31,9 @@ public class S3Util {
     }
 
     public String getUrl(String path) {
-        return baseUrl + "/" + path;
+        return (path != null)? baseUrl + "/" + path : null;
     }
+
     public String upload(MultipartFile image) {
         String extension = verificationFile(image);
         String filePath;

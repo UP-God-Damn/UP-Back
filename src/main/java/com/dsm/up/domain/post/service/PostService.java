@@ -11,9 +11,7 @@ import com.dsm.up.domain.post.exception.PostNotFoundException;
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
 import com.dsm.up.domain.post.presentation.dto.response.PostResponse;
 import com.dsm.up.global.aws.S3Util;
-import com.dsm.up.global.aws.exception.ImageNotUploadException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.dsm.up.domain.post.presentation.dto.response.PostListResponse;
@@ -39,10 +37,7 @@ public class PostService {
                 .major(MajorType.valueOf(request.getMajor()))
                 .build());
 
-        if(file != null) {
-            post.updatePath(s3Util.upload(file));
-            if(post.getPath().equals(null)) throw ImageNotUploadException.EXCEPTION;
-        }
+        if(file != null) post.updatePath(s3Util.upload(file));
 
         return post.getId();
     }
@@ -103,7 +98,14 @@ public class PostService {
             posts = postRepository.findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType.valueOf(state), title, MajorType.valueOf(major));
 
 
-        return new PostListResponse(posts.size(), posts.stream().map(post -> PostListResponse.PostResponse.builder().id(post.getId()).title(post.getTitle()).userNickname(post.getUser().getNickname()).state(post.getState().getStatus()).major(post.getMajor().getMajor()).createDate(post.getCreateDate()).build()).collect(Collectors.toList()));
+        return new PostListResponse(posts.size(), posts.stream().map(post -> PostListResponse.PostResponse.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .userNickname(post.getUser().getNickname())
+                .state(post.getState().getStatus())
+                .major(post.getMajor().getMajor())
+                .createDate(post.getCreateDate())
+                .build()).collect(Collectors.toList()));
     }
 
 }
