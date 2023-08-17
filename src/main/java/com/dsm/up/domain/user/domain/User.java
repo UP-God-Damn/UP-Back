@@ -26,11 +26,17 @@ public class User {
     @Column(nullable = false, length = 12)
     private String nickname;
 
+    private String path;
 
     @Builder
     public User(String accountId, String password, String nickname) {
         this.accountId = accountId;
         this.password = password;
         this.nickname = nickname;
+    }
+
+    public String updatePath(String path) {
+        this.path = path;
+        return this.path;
     }
 }
