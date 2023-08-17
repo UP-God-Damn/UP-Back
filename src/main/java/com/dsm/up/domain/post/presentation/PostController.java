@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -27,15 +29,15 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping
+    @PostMapping(consumes = {"application/json", "multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    public Long create(@RequestBody @Valid PostRequest request) {
-        return postService.create(request);
+    public Long create(@RequestPart(value = "request") @Valid PostRequest request, @RequestPart(value = "image", required = false) MultipartFile file) {
+        return postService.create(request, file);
     }
 
-    @PutMapping("/{id}")
-    public Long update(@PathVariable @NotNull Long id, @RequestBody @Valid PostRequest request) {
-        return postService.update(id, request);
+    @PutMapping(value = "/{id}", consumes = {"application/json", "multipart/form-dat"})
+    public Long update(@PathVariable @NotNull Long id, @RequestPart(value = "request") @Valid PostRequest request, @RequestPart(value = "image", required = false) MultipartFile file) {
+        return postService.update(id, request, file);
     }
 
     @DeleteMapping("/{id}")

@@ -41,6 +41,8 @@ public class Post {
     @Column(nullable = false, length = 10000)
     private String content;
 
+    private String path;
+
     @Column(nullable = false)
     private String language;
 
@@ -80,5 +82,10 @@ public class Post {
         this.state = state;
         this.major = major;
         return this.id;
+    }
+
+    public String updatePath(String path) {
+        this.path = path;
+        return this.path;
     }
 }
