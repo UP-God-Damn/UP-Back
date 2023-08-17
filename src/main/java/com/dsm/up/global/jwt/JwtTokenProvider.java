@@ -1,6 +1,5 @@
 package com.dsm.up.global.jwt;
 
-import com.dsm.up.domain.user.domain.repository.RefreshTokenRepository;
 import com.dsm.up.global.jwt.exception.TokenUnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -10,7 +9,6 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,8 +23,6 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("classpath:application.yml")
 public class JwtTokenProvider {
-    private static final String HEADER = "Authorization";
-    private static final String PREFIX = "Bearer";
 
     @Value("${spring.jwt.key}")
     private String secretKey;
@@ -44,7 +40,7 @@ public class JwtTokenProvider {
 
     public String generateAccessToken(String accountId) {
         return Jwts.builder()
-                .setHeaderParam("typ", "Access")
+                .setHeaderParam("typ", "access")
                 .setSubject(accountId)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenTime * 1000))
@@ -54,7 +50,7 @@ public class JwtTokenProvider {
 
     public String generateRefreshToken(String accountId) {
         return Jwts.builder()
-                .setHeaderParam("typ", "Refresh")
+                .setHeaderParam("typ", "refresh")
                 .setSubject(accountId)
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenTime * 1000))
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
@@ -63,13 +59,7 @@ public class JwtTokenProvider {
 
 
     public Authentication getAuthentication(String token) {
-        String username = Jwts.parser()
-                .setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes()))
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(getSubject(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -95,7 +85,7 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
-    private String subject(String token) {
+    private String getSubject(String token) {
         try {
             return getBody(token).getSubject();
         } catch (Exception e) {
