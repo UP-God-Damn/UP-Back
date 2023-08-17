@@ -1,12 +1,12 @@
 package com.dsm.up.domain.user.exception;
 
-import com.dsm.up.global.exception.BaseException;
 import com.dsm.up.domain.user.exception.error.UserErrorCode;
+import com.dsm.up.global.exception.BaseException;
 
-public class PasswordMissMatchException extends BaseException {
-    public static final PasswordMissMatchException EXCEPTION = new PasswordMissMatchException();
+public class UserNotMatchException extends BaseException {
+    public static final UserNotMatchException EXCEPTION = new UserNotMatchException();
 
-    public PasswordMissMatchException() {
-        super(UserErrorCode.PASSWORD_MISS_MATCH);
+    public UserNotMatchException() {
+        super(UserErrorCode.USER_NOT_MATCH_);
     }
 }
