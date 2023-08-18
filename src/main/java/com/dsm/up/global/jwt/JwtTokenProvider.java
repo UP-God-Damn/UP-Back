@@ -1,5 +1,7 @@
 package com.dsm.up.global.jwt;
 
+import com.dsm.up.global.jwt.exception.NotAccessTokenException;
+import com.dsm.up.global.jwt.exception.TokenErrorException;
 import com.dsm.up.global.jwt.exception.TokenUnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -64,19 +66,30 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
+        isRefreshToken(token);
+
         try {
             Jwts.parser().setSigningKey(key).parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
+            throw TokenErrorException.EXCEPTION;
         } catch (ExpiredJwtException e) {
             log.info("JWT 토큰이 만료되었습니다.");
+            throw TokenUnauthorizedException.EXCEPTION;
         } catch (UnsupportedJwtException e) {
             log.info("지원하지 않는 JWT 토큰입니다.");
+            throw TokenErrorException.EXCEPTION;
         } catch (IllegalArgumentException e) {
             log.info("잘못된 JWT 토큰입니다.");
+            throw TokenErrorException.EXCEPTION;
+        } catch (Exception e) {
+            throw TokenUnauthorizedException.EXCEPTION;
         }
-        return false;
+    }
+
+    private void isRefreshToken(String token) {
+        if(!getHeader(token).equals("refresh")) throw NotAccessTokenException.EXCEPTION;
     }
 
     private Claims getBody(String token) {
