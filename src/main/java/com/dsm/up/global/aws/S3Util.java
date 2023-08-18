@@ -44,6 +44,7 @@ public class S3Util {
     public String upload(MultipartFile image) {
         String extension = verificationFile(image);
         String filePath;
+
         try {
             filePath = saveImage(image, extension);
         } catch (IOException e) {
