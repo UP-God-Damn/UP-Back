@@ -44,7 +44,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setHeaderParam("typ", "access")
                 .setSubject(accountId)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, key)
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenTime * 1000))
                 .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .compact();
