@@ -41,6 +41,7 @@ public class PostService {
                 .language(request.getLanguage())
                 .state(StateType.valueOf(request.getState()))
                 .major(MajorType.valueOf(request.getMajor()))
+                .user(userUtil.getUser())
                 .build());
 
         if(file != null) post.updatePath(s3Util.upload(file));
