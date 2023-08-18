@@ -23,6 +23,11 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("classpath:application.yml")
 public class JwtTokenProvider {
+<<<<<<< Updated upstream
+=======
+    private static final String HEADER = "Authorization";
+    private static final String PREFIX = "Bearer";
+>>>>>>> Stashed changes
 
     @Value("${spring.jwt.key}")
     private String secretKey;
@@ -34,7 +39,13 @@ public class JwtTokenProvider {
     private Long refreshTokenTime;
 
     private final UserDetailsService userDetailsService;
+<<<<<<< Updated upstream
     public JwtTokenProvider(UserDetailsService userDetailsService) {
+=======
+
+    public JwtTokenProvider(AuthDetailsService authDetailsService, UserDetailsService userDetailsService) {
+
+>>>>>>> Stashed changes
         this.userDetailsService = userDetailsService;
     }
 
