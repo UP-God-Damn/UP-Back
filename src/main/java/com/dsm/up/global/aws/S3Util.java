@@ -26,11 +26,18 @@ public class S3Util {
     @Value("${cloud.aws.s3.url}")
     private String baseUrl;
 
+    @Value("${cloud.aws.s3.default-image}")
+    private String defaultImage;
+
     public void delete(String objectName) {
         amazonS3.deleteObject(bucketName, objectName);
     }
 
-    public String getUrl(String path) {
+    public String getProfileImgeUrl(String path) {
+        return (path != null)? baseUrl + "/" + path : defaultImage;
+    }
+
+    public String getPostImageUrl(String path) {
         return (path != null)? baseUrl + "/" + path : null;
     }
 

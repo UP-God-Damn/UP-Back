@@ -14,7 +14,7 @@ import com.dsm.up.domain.user.exception.UserNotMatchException;
 import com.dsm.up.domain.user.service.util.UserUtil;
 import com.dsm.up.global.aws.S3Util;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.dsm.up.domain.post.presentation.dto.response.PostListResponse;
@@ -29,9 +29,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final S3Util s3Util;
-    @Value("${cloud.aws.s3.default-image}")
-    private String defaultImage;
-    private UserUtil userUtil;
+    private final UserUtil userUtil;
 
     @Transactional
     public Long create(PostRequest request, MultipartFile file) {
@@ -49,7 +47,7 @@ public class PostService {
         return post.getId();
     }
 
-    @Transactional // todo 수정하는 사람과 작성자가 일치하는 지 확인하기
+    @Transactional
     public Long update(Long id, PostRequest request, MultipartFile file) {
         Post post = postRepository.findById(id).orElseThrow(() -> PostNotFoundException.EXCEPTION);
         if(!post.getUser().getAccountId().equals(userUtil.getUserId())) throw UserNotMatchException.EXCEPTION;
@@ -61,7 +59,7 @@ public class PostService {
         return post.update(request.getTitle(), request.getContent(), request.getLanguage(), StateType.valueOf(request.getState()), MajorType.valueOf(request.getMajor()));
     }
 
-    @Transactional //todo 삭제 요청하는 유저와 작성한 유저가 일치하는지 확인해야함
+    @Transactional
     public void delete(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> PostNotFoundException.EXCEPTION);
         if(!post.getUser().getAccountId().equals(userUtil.getUserId())) throw UserNotMatchException.EXCEPTION;
@@ -74,14 +72,13 @@ public class PostService {
     public PostResponse getPostDetails(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> PostNotFoundException.EXCEPTION);
 
-
         return PostResponse.builder()
                 .userNickname(post.getUser().getNickname())
-                .profileImage(post.getUser().getPath().equals(defaultImage) ? post.getUser().getPath() : s3Util.getUrl(post.getUser().getPath()))
+                .profileImage(s3Util.getProfileImgeUrl(post.getUser().getPath()))
                 .createDate(post.getCreateDate())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .file(s3Util.getUrl(post.getPath()))
+                .file(s3Util.getPostImageUrl(post.getPath()))
                 .language(post.getLanguage())
                 .state(post.getState().getStatus())
                 .major(post.getMajor().getMajor())
