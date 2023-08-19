@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 
 public class UserService {
-    private final PostRepository postRepository;
     private final UserUtil userUtil;
 
     public UserDetailResponse getUser() {
