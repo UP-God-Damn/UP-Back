@@ -84,9 +84,10 @@ public class PostService {
                 .major(post.getMajor().getMajor())
                 .comments(post.getComments().stream().map(comment -> {
                             return CommentResponse.builder()
+                                    .id(comment.getId())
+                                    .createDate(comment.getCreateDate())
                                     .userNickname(comment.getUser().getNickname())
                                     .content(comment.getContent())
-                                    .createDate(comment.getCreateDate())
                                     .build();
                         }
                 ).collect(Collectors.toList()))
