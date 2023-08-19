@@ -9,5 +9,7 @@ public class UserDetailResponse {
     private final String nickname;
     private final String accountId;
     private final String title;
+    private final Enum State;
+    private final Enum Major;
 }
 
