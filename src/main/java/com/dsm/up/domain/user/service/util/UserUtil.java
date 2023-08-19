@@ -1,5 +1,8 @@
 package com.dsm.up.domain.user.service.util;
 
+import com.dsm.up.domain.post.domain.Post;
+import com.dsm.up.domain.post.domain.repository.PostRepository;
+import com.dsm.up.domain.post.exception.PostNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -26,5 +29,4 @@ public class UserUtil {
 	public User getUser() {
 		return userRepository.findById(getUserId()).orElseThrow(() -> UserNotFoundException.EXCEPTION);
 	}
-
 }
