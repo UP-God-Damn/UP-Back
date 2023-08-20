@@ -16,7 +16,7 @@ public class UpExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
     protected ResponseEntity<ErrorResponse> UphandlerException(BaseException e) {
-        log.error("[UP] : " + e.getMessage(), e);
+        log.error("[UpException] : " + e.getErrorCode().getMessage(), e);
         return new ResponseEntity<>(new ErrorResponse(e.getErrorCode().getStatus(), e.getErrorCode().getMessage()), HttpStatus.valueOf(e.getErrorCode().getStatus()));
     }
 
