@@ -7,12 +7,14 @@ import lombok.Getter;
 @Getter
 public class CommentResponse {
 
+    private final Long id;
     private final String userNickname;
     private final String content;
     private final String createDate;
 
     @Builder
-    public CommentResponse(String userNickname, String content, String createDate) {
+    public CommentResponse(Long id, String userNickname, String content, String createDate) {
+        this.id = id;
         this.userNickname = userNickname;
         this.content = content;
         this.createDate = createDate;
