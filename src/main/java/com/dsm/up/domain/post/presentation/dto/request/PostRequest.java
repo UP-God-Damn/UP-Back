@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 public class PostRequest {
 
     @NotBlank
-    @Size(min = 5, max = 70)
+    @Size(min = 5, max = 25)
     private String title;
 
     @NotBlank
