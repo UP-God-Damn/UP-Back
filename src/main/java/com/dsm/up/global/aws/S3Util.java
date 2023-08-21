@@ -34,6 +34,7 @@ public class S3Util {
     }
 
     public String getProfileImgeUrl(String path) {
+        if(path == defaultImage) return path;
         return (path != null)? baseUrl + "/" + path : defaultImage;
     }
 
