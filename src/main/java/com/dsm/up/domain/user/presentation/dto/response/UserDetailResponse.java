@@ -10,5 +10,6 @@ import lombok.Getter;
 public class UserDetailResponse {
     private final String nickname;
     private final String accountId;
+    private final String profileImgeUrl;
 }
 
