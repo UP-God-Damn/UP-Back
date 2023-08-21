@@ -88,8 +88,4 @@ public class Post {
         this.path = path;
         return this.path;
     }
-
-    public StateType getState() {
-        return state;
-    }
 }
