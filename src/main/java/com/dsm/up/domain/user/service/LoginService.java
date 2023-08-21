@@ -1,8 +1,6 @@
 package com.dsm.up.domain.user.service;
 
-import com.dsm.up.domain.user.domain.RefreshToken;
 import com.dsm.up.domain.user.domain.User;
-import com.dsm.up.domain.user.domain.repository.RefreshTokenRepository;
 import com.dsm.up.domain.user.domain.repository.UserRepository;
 import com.dsm.up.domain.user.exception.PasswordMissMatchException;
 import com.dsm.up.domain.user.exception.UserNotFoundException;

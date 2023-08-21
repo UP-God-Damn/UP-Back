@@ -19,7 +19,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -94,7 +93,7 @@ public class JwtTokenProvider {
     }
 
     private void isRefreshToken(String token) {
-        if(!getHeader(token).equals("refresh")) throw NotAccessTokenException.EXCEPTION;
+        if(getHeader(token).equals("refresh")) throw NotAccessTokenException.EXCEPTION;
     }
 
     private Claims getBody(String token) {
