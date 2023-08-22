@@ -41,6 +41,7 @@ public class PostDetailsService {
 						.id(comment.getId())
 						.createDate(comment.getCreateDate())
 						.userNickname(comment.getUser().getNickname())
+							.profileImage(s3Util.getProfileImgeUrl(comment.getUser().getPath()))
 						.content(comment.getContent())
 						.build();
 				}
