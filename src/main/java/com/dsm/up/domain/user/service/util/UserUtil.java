@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 public class UserUtil {
 
 	private final UserRepository userRepository;
-	private final PostRepository postRepository;
 
 	public String getUserId() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -32,8 +31,4 @@ public class UserUtil {
 		return userRepository.findById(getUserId()).orElseThrow(() -> UserNotFoundException.EXCEPTION);
 	}
 
-	public Page<Post> getUserPostsPaged(Pageable pageable) {
-		User user = getUser();
-		return postRepository.findByAccountId(user.getAccountId(), pageable);
-	}
 }

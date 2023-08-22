@@ -3,19 +3,18 @@ package com.dsm.up.domain.post.domain.repository;
 import com.dsm.up.domain.post.domain.Post;
 import com.dsm.up.domain.post.domain.type.MajorType;
 import com.dsm.up.domain.post.domain.type.StateType;
+import com.dsm.up.domain.user.domain.User;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
-
 public interface PostRepository extends CrudRepository<Post, Long> {
 
-    List<Post> findAllByTitleContainingOrderByCreateDateDesc(String title);
-    List<Post> findAllByStateAndTitleContainingOrderByCreateDateDesc(StateType state, String title);
-    List<Post> findAllByTitleContainingAndMajorOrderByCreateDateDesc(String title, MajorType major);
-    List<Post> findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType state, String title, MajorType major);
-    Page<Post> findByAccountId(String accountId, Pageable pageable);
-
-
+    Page<Post> findAllByTitleContainingOrderByCreateDateDesc(String title, Pageable pageable);
+    Page<Post> findAllByStateAndTitleContainingOrderByCreateDateDesc(StateType state, String title, Pageable pageable);
+    Page<Post> findAllByTitleContainingAndMajorOrderByCreateDateDesc(String title, MajorType major, Pageable pageable);
+    Page<Post> findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType state, String title, MajorType major, Pageable pageable);
+    Page<Post> findAllByUserOrderByCreateDateDesc(User user, Pageable pageable);
+    long countByUser(User user);
 }

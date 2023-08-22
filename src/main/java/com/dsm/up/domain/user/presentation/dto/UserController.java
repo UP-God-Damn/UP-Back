@@ -60,10 +60,5 @@ public class UserController {
     public UserDetailResponse getUser() {
         return userService.getUser();
     }
-
-    @GetMapping("/user/posts")
-    public Page<Post> getUserPostsPaged(Pageable pageable) {
-        return userUtil.getUserPostsPaged(pageable);
-    }
     
 }

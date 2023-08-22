@@ -5,11 +5,13 @@ import com.dsm.up.domain.post.domain.type.StateType;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
-@Builder
+@Getter @Builder
 public class UserDetailResponse {
+
     private final String nickname;
     private final String accountId;
     private final String profileImgeUrl;
+    private final long totalPosts;
+
 }
 
