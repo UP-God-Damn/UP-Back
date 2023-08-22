@@ -1,6 +1,5 @@
 package com.dsm.up.domain.post.presentation;
 
-import com.dsm.up.domain.post.domain.Post;
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
 import com.dsm.up.domain.post.presentation.dto.response.PostResponse;
 import com.dsm.up.domain.post.presentation.dto.response.PostListResponse;
@@ -9,7 +8,6 @@ import com.dsm.up.domain.post.service.PostListService;
 import com.dsm.up.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,7 +40,7 @@ public class PostController {
         return postService.create(request, file);
     }
 
-    @PutMapping(value = "/{id}", consumes = {"application/json", "multipart/form-dat"})
+    @PutMapping(value = "/{id}", consumes = {"application/json", "multipart/form-data"})
     public Long update(@PathVariable @NotNull Long id, @RequestPart(value = "request") @Valid PostRequest request, @RequestPart(value = "image", required = false) MultipartFile file) {
         return postService.update(id, request, file);
     }
