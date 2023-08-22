@@ -26,6 +26,7 @@ import javax.validation.Valid;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
+
     private final SignUpService signUpService;
     private final LoginService loginService;
     private final LogoutService logoutService;
@@ -64,4 +65,5 @@ public class UserController {
     public Page<Post> getUserPostsPaged(Pageable pageable) {
         return userUtil.getUserPostsPaged(pageable);
     }
+    
 }

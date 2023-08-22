@@ -34,14 +34,12 @@ public class SignUpService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .nickname(request.getNickname())
                 .build());
+
         user.updatePath(file != null ? s3Util.upload(file) : defaultImage);
 
-        String accessToken = jwtTokenProvider.generateAccessToken(user.getAccountId());
-        String refreshToken = jwtTokenProvider.generateRefreshToken(user.getAccountId());
-
         return TokenResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .accessToken(jwtTokenProvider.generateAccessToken(user.getAccountId()))
+                .refreshToken(jwtTokenProvider.generateRefreshToken(user.getAccountId()))
                 .build();
     }
 }
