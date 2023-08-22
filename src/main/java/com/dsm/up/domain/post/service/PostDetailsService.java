@@ -28,7 +28,7 @@ public class PostDetailsService {
 		return PostResponse.builder()
 			.id(post.getId())
 			.userNickname(post.getUser().getNickname())
-			.profileImage(s3Util.getProfileImgeUrl(post.getUser().getPath()))
+			.profileImage(s3Util.getProfileImageUrl(post.getUser().getPath()))
 			.createDate(post.getCreateDate())
 			.title(post.getTitle())
 			.content(post.getContent())
@@ -41,7 +41,7 @@ public class PostDetailsService {
 						.id(comment.getId())
 						.createDate(comment.getCreateDate())
 						.userNickname(comment.getUser().getNickname())
-							.profileImage(s3Util.getProfileImgeUrl(comment.getUser().getPath()))
+							.profileImage(s3Util.getProfileImageUrl(comment.getUser().getPath()))
 						.content(comment.getContent())
 						.build();
 				}

@@ -33,7 +33,7 @@ public class S3Util {
         amazonS3.deleteObject(bucketName, objectName);
     }
 
-    public String getProfileImgeUrl(String path) {
+    public String getProfileImageUrl(String path) {
         return (path != null)? baseUrl + "/" + path : defaultImage;
     }
 

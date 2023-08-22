@@ -22,7 +22,7 @@ public class UserService {
         return UserDetailResponse.builder()
             .nickname(user.getNickname())
             .accountId(user.getAccountId())
-            .profileImgeUrl(s3Util.getProfileImgeUrl(user.getPath()))
+            .profileImgeUrl(s3Util.getProfileImageUrl(user.getPath()))
             .totalPosts(postRepository.countByUser(user))
             .build();
     }
