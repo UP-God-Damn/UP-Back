@@ -2,9 +2,7 @@ package com.dsm.up.domain.user.service.util;
 
 import com.dsm.up.domain.post.domain.Post;
 import com.dsm.up.domain.post.domain.repository.PostRepository;
-import com.dsm.up.domain.post.exception.PostNotFoundException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,9 +14,6 @@ import com.dsm.up.domain.user.exception.UserNotFoundException;
 import com.dsm.up.global.jwt.exception.TokenUnauthorizedException;
 
 import lombok.RequiredArgsConstructor;
-
-import javax.persistence.TypedQuery;
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
