@@ -3,7 +3,6 @@ package com.dsm.up.domain.comment.presentation.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 
-
 @Getter
 public class CommentResponse {
 
