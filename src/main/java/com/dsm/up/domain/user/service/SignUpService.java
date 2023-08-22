@@ -21,8 +21,6 @@ public class SignUpService {
     private final PasswordEncoder passwordEncoder;
     private final S3Util s3Util;
     private final JwtTokenProvider jwtTokenProvider;
-    @Value("${cloud.aws.s3.default-image}")
-    private String defaultImage;
 
     public TokenResponse userSignUp(SignUpRequest request, MultipartFile file) {
         if (userRepository.existsByAccountId(request.getAccountId())) {
@@ -35,7 +33,7 @@ public class SignUpService {
                 .nickname(request.getNickname())
                 .build());
 
-        user.updatePath(file != null ? s3Util.upload(file) : defaultImage);
+        if(file != null) user.updatePath(s3Util.upload(file));
 
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.generateAccessToken(user.getAccountId()))

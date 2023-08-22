@@ -6,7 +6,6 @@ import com.dsm.up.domain.comment.exception.CommentNotFoundException;
 import com.dsm.up.domain.comment.presentation.dto.request.CommentRequest;
 import com.dsm.up.domain.user.exception.UserNotMatchException;
 import com.dsm.up.domain.user.service.util.UserUtil;
-import com.dsm.up.global.aws.S3Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
