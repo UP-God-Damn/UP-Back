@@ -10,12 +10,15 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import java.util.Base64;
+
+import java.security.Key;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -25,14 +28,6 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource("classpath:application.yml")
 public class JwtTokenProvider {
-<<<<<<< Updated upstream
-=======
-    private static final String HEADER = "Authorization";
-    private static final String PREFIX = "Bearer";
->>>>>>> Stashed changes
-
-    @Value("${spring.jwt.key}")
-    private String secretKey;
 
     @Value("${spring.jwt.access}")
     private Long accessTokenTime;
@@ -41,23 +36,21 @@ public class JwtTokenProvider {
     private Long refreshTokenTime;
 
     private final UserDetailsService userDetailsService;
-<<<<<<< Updated upstream
-    public JwtTokenProvider(UserDetailsService userDetailsService) {
-=======
+    private final Key key;
 
-    public JwtTokenProvider(AuthDetailsService authDetailsService, UserDetailsService userDetailsService) {
-
->>>>>>> Stashed changes
+    public JwtTokenProvider(@Value("${spring.jwt.key}") String secretKey, UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
     }
+
 
     public String generateAccessToken(String accountId) {
         return Jwts.builder()
                 .setHeaderParam("typ", "access")
                 .setSubject(accountId)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, key)
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenTime * 1000))
-                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .compact();
     }
 
@@ -66,7 +59,7 @@ public class JwtTokenProvider {
                 .setHeaderParam("typ", "refresh")
                 .setSubject(accountId)
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenTime * 1000))
-                .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encodeToString(secretKey.getBytes()))
+                .signWith(SignatureAlgorithm.HS256, key)
                 .compact();
     }
 
@@ -100,11 +93,11 @@ public class JwtTokenProvider {
     }
 
     private void isRefreshToken(String token) {
-        if(!getHeader(token).equals("refresh")) throw NotAccessTokenException.EXCEPTION;
+        if(getHeader(token).equals("refresh")) throw NotAccessTokenException.EXCEPTION;
     }
 
     private Claims getBody(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
     }
 
     private String getSubject(String token) {
@@ -116,7 +109,7 @@ public class JwtTokenProvider {
     }
 
     private JwsHeader getHeader(String token) {
-        return Jwts.parser().setSigningKey(secretKey)
+        return Jwts.parser().setSigningKey(key)
                 .parseClaimsJws(token).getHeader();
     }
 

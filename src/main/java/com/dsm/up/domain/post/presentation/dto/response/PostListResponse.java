@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class PostListResponse {
+
     private final int totalPosts;
     private final List<PostResponse> postResponses;
 
@@ -16,10 +17,11 @@ public class PostListResponse {
     @Builder
     public static class PostResponse {
         private final Long id;
-        private final String title;
         private final String userNickname;
+        private final String title;
         private final String state;
         private final String major;
+        private final String language;
         private final String createDate;
     }
 }
