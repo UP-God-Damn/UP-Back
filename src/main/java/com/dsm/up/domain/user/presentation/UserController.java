@@ -1,7 +1,5 @@
-package com.dsm.up.domain.user.presentation.dto;
+package com.dsm.up.domain.user.presentation;
 
-import com.dsm.up.domain.post.domain.Post;
-import com.dsm.up.domain.post.presentation.dto.response.PostResponse;
 import com.dsm.up.domain.user.presentation.dto.request.LoginRequest;
 import com.dsm.up.domain.user.presentation.dto.request.SignUpRequest;
 import com.dsm.up.domain.user.presentation.dto.response.TokenResponse;
@@ -12,8 +10,6 @@ import com.dsm.up.domain.user.service.SignUpService;
 import com.dsm.up.domain.user.service.UserService;
 import com.dsm.up.domain.user.service.util.UserUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
