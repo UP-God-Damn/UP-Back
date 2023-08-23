@@ -8,7 +8,6 @@ import com.dsm.up.domain.user.presentation.dto.response.TokenResponse;
 import com.dsm.up.global.aws.S3Util;
 import com.dsm.up.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,5 +39,6 @@ public class SignUpService {
                 .refreshToken(jwtTokenProvider.generateRefreshToken(user.getAccountId()))
                 .build();
     }
+
 }
 
