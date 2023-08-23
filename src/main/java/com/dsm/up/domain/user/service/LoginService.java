@@ -1,6 +1,8 @@
 package com.dsm.up.domain.user.service;
 
+import com.dsm.up.domain.user.domain.RefreshToken;
 import com.dsm.up.domain.user.domain.User;
+import com.dsm.up.domain.user.domain.repository.RefreshTokenRepository;
 import com.dsm.up.domain.user.domain.repository.UserRepository;
 import com.dsm.up.domain.user.exception.PasswordMissMatchException;
 import com.dsm.up.domain.user.exception.UserNotFoundException;
@@ -18,6 +20,7 @@ public class LoginService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     public TokenResponse userLogIn(LoginRequest request) {
         User user = userRepository.findByAccountId(request.getAccountId())
@@ -29,7 +32,10 @@ public class LoginService {
 
         return TokenResponse.builder()
                 .accessToken(jwtTokenProvider.generateAccessToken(user.getAccountId()))
-                .refreshToken(jwtTokenProvider.generateRefreshToken(user.getAccountId()))
+                .refreshToken(refreshTokenRepository.save(RefreshToken.builder()
+                        .accountId(user.getAccountId())
+                        .refreshToken(jwtTokenProvider.generateRefreshToken(user.getAccountId()))
+                    .build()).getRefreshToken())
                 .build();
     }
 }

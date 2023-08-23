@@ -1,6 +1,8 @@
 package com.dsm.up.domain.user.service;
 
+import com.dsm.up.domain.user.domain.RefreshToken;
 import com.dsm.up.domain.user.domain.User;
+import com.dsm.up.domain.user.domain.repository.RefreshTokenRepository;
 import com.dsm.up.domain.user.domain.repository.UserRepository;
 import com.dsm.up.domain.user.exception.UserIdExistsException;
 import com.dsm.up.domain.user.presentation.dto.request.SignUpRequest;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class SignUpService {
 
     private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final S3Util s3Util;
     private final JwtTokenProvider jwtTokenProvider;
@@ -35,9 +38,12 @@ public class SignUpService {
         if(file != null) user.updatePath(s3Util.upload(file));
 
         return TokenResponse.builder()
-                .accessToken(jwtTokenProvider.generateAccessToken(user.getAccountId()))
+            .accessToken(jwtTokenProvider.generateAccessToken(user.getAccountId()))
+            .refreshToken(refreshTokenRepository.save(RefreshToken.builder()
+                .accountId(user.getAccountId())
                 .refreshToken(jwtTokenProvider.generateRefreshToken(user.getAccountId()))
-                .build();
+                .build()).getRefreshToken())
+            .build();
     }
 
 }
