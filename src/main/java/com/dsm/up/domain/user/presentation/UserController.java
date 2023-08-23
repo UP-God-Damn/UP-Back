@@ -31,8 +31,8 @@ public class UserController {
 
     @PostMapping(value = "/signup", consumes = {"application/json", "multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void signUp(@RequestPart(value = "request") @Valid SignUpRequest request, @RequestPart(value = "image", required = false) MultipartFile file){
-        signUpService.userSignUp(request, file);
+    public TokenResponse signUp(@RequestPart(value = "request") @Valid SignUpRequest request, @RequestPart(value = "image", required = false) MultipartFile file){
+        return signUpService.userSignUp(request, file);
     }
 
     @PostMapping("/login")
