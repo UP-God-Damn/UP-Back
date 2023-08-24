@@ -42,6 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/refresh")
+    @ResponseStatus(HttpStatus.CREATED)
     public TokenResponse reassignToken(@RequestHeader("Refresh-Token")String token) {
         return reassignToken(token);
     }
@@ -55,6 +56,11 @@ public class UserController {
     @GetMapping
     public UserDetailResponse getUser() {
         return userService.getUser();
+    }
+
+    @GetMapping("/{accountId}")
+    public void existsAccountId(@PathVariable String accountId) {
+        userService.existsAccountId(accountId);
     }
     
 }
