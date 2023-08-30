@@ -18,6 +18,7 @@ public class PostListResponse {
     public static class PostResponse {
         private final Long id;
         private final String userNickname;
+        private final String profile;
         private final String title;
         private final String state;
         private final String major;
