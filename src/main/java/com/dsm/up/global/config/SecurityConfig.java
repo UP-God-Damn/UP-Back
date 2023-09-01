@@ -36,7 +36,7 @@ public class SecurityConfig {
             .and()
             .httpBasic().disable()
             .authorizeRequests()
-            .antMatchers("/user/*").permitAll()
+            .antMatchers("/user/*").permitAll().antMatchers("/post/search").permitAll()
             .antMatchers(HttpMethod.GET, "/user").authenticated()
             .anyRequest().authenticated()
             .and()
