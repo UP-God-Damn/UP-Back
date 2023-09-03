@@ -24,7 +24,7 @@ public class PostService {
     private final UserUtil userUtil;
 
     @Transactional
-    public Long create(PostRequest request, MultipartFile file) {
+    public Long create(PostRequest request) {
         Post post = postRepository.save(Post.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
@@ -34,30 +34,33 @@ public class PostService {
                 .user(userUtil.getUser())
                 .build());
 
-        if(file != null) post.updatePath(s3Util.upload(file));
-
         return post.getId();
     }
 
     @Transactional
-    public Long update(Long id, PostRequest request, MultipartFile file) {
+    public Long update(Long id, PostRequest request) {
         Post post = postRepository.findById(id).orElseThrow(() -> PostNotFoundException.EXCEPTION);
         if(!post.getUser().getAccountId().equals(userUtil.getUserId())) throw UserNotMatchException.EXCEPTION;
 
-        if (file != null) {
-            if(post.getPath() != null) s3Util.delete(post.getPath());
-            post.updatePath(s3Util.upload(file));
-        }
         return post.update(request.getTitle(), request.getContent(), request.getLanguage(), StateType.valueOf(request.getState()), MajorType.valueOf(request.getMajor()));
     }
 
     @Transactional
     public void delete(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> PostNotFoundException.EXCEPTION);
-        if(!post.getUser().getAccountId().equals(userUtil.getUserId())) throw UserNotMatchException.EXCEPTION;
+        if (!post.getUser().getAccountId().equals(userUtil.getUserId())) throw UserNotMatchException.EXCEPTION;
         if (post.getPath() != null) s3Util.delete(post.getPath());
 
         postRepository.delete(post);
+    }
+
+    @Transactional
+    public void postImage(Long id, MultipartFile file) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> PostNotFoundException.EXCEPTION);
+        if (post.getPath() != null) s3Util.delete(post.getPath());
+
+        post.updatePath(s3Util.upload(file));
     }
 
 }

@@ -34,15 +34,15 @@ public class PostController {
     private final PostDetailsService postDetailsService;
     private final PostListService postListService;
 
-    @PostMapping(consumes = {"application/json", "multipart/form-data"})
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Long create(@RequestPart(value = "request") @Valid PostRequest request, @RequestPart(value = "image", required = false) MultipartFile file) {
-        return postService.create(request, file);
+    public Long create(@RequestPart(value = "request") @Valid PostRequest request) {
+        return postService.create(request);
     }
 
-    @PutMapping(value = "/{id}", consumes = {"application/json", "multipart/form-data"})
-    public Long update(@PathVariable @NotNull Long id, @RequestPart(value = "request") @Valid PostRequest request, @RequestPart(value = "image", required = false) MultipartFile file) {
-        return postService.update(id, request, file);
+    @PutMapping(value = "/{id}")
+    public Long update(@PathVariable @NotNull Long id, @RequestPart(value = "request") @Valid PostRequest request){
+        return postService.update(id, request);
     }
 
     @DeleteMapping("/{id}")
@@ -66,4 +66,8 @@ public class PostController {
         return postListService.getUserPostsPaged(pageable);
     }
 
+    @PostMapping(value = "/postImage/{id}", consumes = "multipart/form-data")
+    public void postImage(@PathVariable @NotNull Long id, @RequestPart(value = "image") MultipartFile file) {
+        postService.postImage(id, file);
+    }
 }

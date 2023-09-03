@@ -31,8 +31,6 @@ public class UserController {
     private final LogoutService logoutService;
     private final UserService userService;
     private final UserUtil userUtil;
-    private final S3Util s3Util;
-    private final UserRepository userRepository;
 
     @PostMapping(value = "/signup")
     @ResponseStatus(HttpStatus.CREATED)
