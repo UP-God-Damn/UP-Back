@@ -1,5 +1,7 @@
 package com.dsm.up.domain.user.presentation;
 
+import com.dsm.up.domain.user.domain.User;
+import com.dsm.up.domain.user.domain.repository.UserRepository;
 import com.dsm.up.domain.user.presentation.dto.request.LoginRequest;
 import com.dsm.up.domain.user.presentation.dto.request.SignUpRequest;
 import com.dsm.up.domain.user.presentation.dto.response.TokenResponse;
@@ -9,6 +11,7 @@ import com.dsm.up.domain.user.service.LogoutService;
 import com.dsm.up.domain.user.service.SignUpService;
 import com.dsm.up.domain.user.service.UserService;
 import com.dsm.up.domain.user.service.util.UserUtil;
+import com.dsm.up.global.aws.S3Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +31,8 @@ public class UserController {
     private final LogoutService logoutService;
     private final UserService userService;
     private final UserUtil userUtil;
+    private final S3Util s3Util;
+    private final UserRepository userRepository;
 
     @PostMapping(value = "/signup", consumes = {"application/json", "multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
@@ -61,6 +66,15 @@ public class UserController {
     @GetMapping("/{accountId}")
     public void existsAccountId(@PathVariable String accountId) {
         userService.existsAccountId(accountId);
+    }
+
+    @PostMapping(value = "/profile-image", consumes = {"multipart/form-data"})
+    @ResponseStatus(HttpStatus.CREATED)
+    public void uploadProfileImage(@RequestPart(value = "image") MultipartFile file) {
+        String profileImageUrl = s3Util.upload(file);
+        User user = userUtil.getUser();
+        user.updateProfileImageUrl(profileImageUrl);
+        userRepository.save(user);
     }
     
 }
