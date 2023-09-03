@@ -26,8 +26,6 @@ public class User {
 
     private String path;
 
-    private String profileImageUrl;
-
     @Builder
     public User(String accountId, String password, String nickname) {
         this.accountId = accountId;
@@ -38,9 +36,5 @@ public class User {
     public String updatePath(String path) {
         this.path = path;
         return this.path;
-    }
-
-    public void updateProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
     }
 }

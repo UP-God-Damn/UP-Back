@@ -34,10 +34,10 @@ public class UserController {
     private final S3Util s3Util;
     private final UserRepository userRepository;
 
-    @PostMapping(value = "/signup", consumes = {"application/json", "multipart/form-data"})
+    @PostMapping(value = "/signup")
     @ResponseStatus(HttpStatus.CREATED)
-    public TokenResponse signUp(@RequestPart(value = "request") @Valid SignUpRequest request, @RequestPart(value = "image", required = false) MultipartFile file){
-        return signUpService.userSignUp(request, file);
+     public TokenResponse signUp(@RequestBody SignUpRequest request) {
+        return signUpService.userSignUp(request);
     }
 
     @PostMapping("/login")
@@ -68,13 +68,10 @@ public class UserController {
         userService.existsAccountId(accountId);
     }
 
-    @PostMapping(value = "/profile-image", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/profile-image/{accountId}", consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void uploadProfileImage(@RequestPart(value = "image") MultipartFile file) {
-        String profileImageUrl = s3Util.upload(file);
-        User user = userUtil.getUser();
-        user.updateProfileImageUrl(profileImageUrl);
-        userRepository.save(user);
+    public void uploadProfileImage(@PathVariable String accountId, @RequestPart(value = "image", required = false) MultipartFile file) {
+        userUtil.upload(accountId, file);
     }
     
 }

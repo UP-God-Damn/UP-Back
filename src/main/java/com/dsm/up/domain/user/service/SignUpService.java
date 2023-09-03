@@ -21,10 +21,9 @@ public class SignUpService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
-    private final S3Util s3Util;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public TokenResponse userSignUp(SignUpRequest request, MultipartFile file) {
+    public TokenResponse userSignUp(SignUpRequest request) {
         if (userRepository.existsByAccountId(request.getAccountId())) {
             throw new UserIdExistsException();
         }
@@ -34,8 +33,6 @@ public class SignUpService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .nickname(request.getNickname())
                 .build());
-
-        if(file != null) user.updatePath(s3Util.upload(file));
 
         return TokenResponse.builder()
             .accessToken(jwtTokenProvider.generateAccessToken(user.getAccountId()))
