@@ -1,7 +1,5 @@
 package com.dsm.up.domain.user.presentation;
 
-import com.dsm.up.domain.user.domain.User;
-import com.dsm.up.domain.user.domain.repository.UserRepository;
 import com.dsm.up.domain.user.presentation.dto.request.LoginRequest;
 import com.dsm.up.domain.user.presentation.dto.request.SignUpRequest;
 import com.dsm.up.domain.user.presentation.dto.response.TokenResponse;
@@ -11,14 +9,23 @@ import com.dsm.up.domain.user.service.LogoutService;
 import com.dsm.up.domain.user.service.SignUpService;
 import com.dsm.up.domain.user.service.UserService;
 import com.dsm.up.domain.user.service.util.UserUtil;
-import com.dsm.up.global.aws.S3Util;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
 @RestController
 @Transactional
@@ -44,7 +51,7 @@ public class UserController {
         return loginService.userLogIn(request);
     }
 
-    @PutMapping("/refresh")
+    @GetMapping("/refresh")
     @ResponseStatus(HttpStatus.CREATED)
     public TokenResponse reassignToken(@RequestHeader("Refresh-Token")String token) {
         return reassignToken(token);
