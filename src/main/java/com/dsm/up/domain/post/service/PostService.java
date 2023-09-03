@@ -58,6 +58,7 @@ public class PostService {
     public void postImage(Long id, MultipartFile file) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
+        if(!post.getUser().getAccountId().equals(userUtil.getUserId())) throw UserNotMatchException.EXCEPTION;
         if (post.getPath() != null) s3Util.delete(post.getPath());
 
         post.updatePath(s3Util.upload(file));
