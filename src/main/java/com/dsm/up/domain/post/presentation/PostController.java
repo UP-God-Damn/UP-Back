@@ -3,6 +3,7 @@ package com.dsm.up.domain.post.presentation;
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
 import com.dsm.up.domain.post.presentation.dto.response.PostResponse;
 import com.dsm.up.domain.post.presentation.dto.response.PostListResponse;
+import com.dsm.up.domain.post.presentation.dto.response.ReturnPostIdResponse;
 import com.dsm.up.domain.post.service.PostDetailsService;
 import com.dsm.up.domain.post.service.PostListService;
 import com.dsm.up.domain.post.service.PostService;
@@ -37,7 +38,7 @@ public class PostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Long create(@RequestBody @Valid PostRequest request) {
+    public ReturnPostIdResponse create(@RequestBody @Valid PostRequest request) {
         return postService.create(request);
     }
 

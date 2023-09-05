@@ -6,6 +6,7 @@ import com.dsm.up.domain.post.domain.type.MajorType;
 import com.dsm.up.domain.post.domain.type.StateType;
 import com.dsm.up.domain.post.exception.PostNotFoundException;
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
+import com.dsm.up.domain.post.presentation.dto.response.ReturnPostIdResponse;
 import com.dsm.up.domain.user.exception.UserNotMatchException;
 import com.dsm.up.domain.user.service.util.UserUtil;
 import com.dsm.up.global.aws.S3Util;
@@ -14,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+
 
 @RequiredArgsConstructor
 @Service
@@ -24,7 +27,7 @@ public class PostService {
     private final UserUtil userUtil;
 
     @Transactional
-    public Long create(PostRequest request) {
+    public ReturnPostIdResponse create(PostRequest request) {
         Post post = postRepository.save(Post.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
@@ -34,7 +37,7 @@ public class PostService {
                 .user(userUtil.getUser())
                 .build());
 
-        return post.getId();
+        return new ReturnPostIdResponse(post.getId());
     }
 
     @Transactional
