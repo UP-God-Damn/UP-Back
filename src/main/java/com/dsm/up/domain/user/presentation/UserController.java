@@ -73,9 +73,9 @@ public class UserController {
         userService.existsAccountId(accountId);
     }
 
-    @PostMapping(value = "/profile-image/{accountId}", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/profileImage/{accountId}", consumes = {"multipart/form-data"})
     @ResponseStatus(HttpStatus.CREATED)
-    public void uploadProfileImage(@PathVariable String accountId, @RequestPart(value = "image", required = false) MultipartFile file) {
+    public void profileImage(@PathVariable String accountId, @RequestPart(value = "image", required = false) MultipartFile file) {
         userUtil.upload(accountId, file);
     }
     
