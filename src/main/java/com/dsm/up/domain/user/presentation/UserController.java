@@ -10,11 +10,8 @@ import com.dsm.up.domain.user.service.LogoutService;
 import com.dsm.up.domain.user.service.SignUpService;
 import com.dsm.up.domain.user.service.UserService;
 import com.dsm.up.domain.user.service.util.UserUtil;
-
 import com.dsm.up.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-
-import org.apache.http.protocol.HTTP;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -93,5 +90,4 @@ public class UserController {
     public void profileImage(@PathVariable String accountId, @RequestPart(value = "image", required = false) MultipartFile file) {
         userUtil.upload(accountId, file);
     }
-
 }

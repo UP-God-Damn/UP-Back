@@ -100,7 +100,7 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
     }
 
-    private String getSubject(String token) {
+    public String getSubject(String token) {
         try {
             return getBody(token).getSubject();
         } catch (Exception e) {
