@@ -1,5 +1,6 @@
 package com.dsm.up.domain.user.presentation;
 
+import com.dsm.up.domain.user.exception.UserNotFoundException;
 import com.dsm.up.domain.user.presentation.dto.request.LoginRequest;
 import com.dsm.up.domain.user.presentation.dto.request.SignUpRequest;
 import com.dsm.up.domain.user.presentation.dto.response.TokenResponse;
@@ -10,19 +11,15 @@ import com.dsm.up.domain.user.service.SignUpService;
 import com.dsm.up.domain.user.service.UserService;
 import com.dsm.up.domain.user.service.util.UserUtil;
 
+import com.dsm.up.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 
+import org.apache.http.protocol.HTTP;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
@@ -38,10 +35,12 @@ public class UserController {
     private final LogoutService logoutService;
     private final UserService userService;
     private final UserUtil userUtil;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final UserDetailsService userDetailsService;
 
     @PostMapping(value = "/signup")
     @ResponseStatus(HttpStatus.CREATED)
-     public TokenResponse signUp(@RequestBody SignUpRequest request) {
+    public TokenResponse signUp(@RequestBody SignUpRequest request) {
         return signUpService.userSignUp(request);
     }
 
@@ -51,10 +50,26 @@ public class UserController {
         return loginService.userLogIn(request);
     }
 
-    @GetMapping("/refresh")
+    @PostMapping("/refresh")
     @ResponseStatus(HttpStatus.CREATED)
-    public TokenResponse reassignToken(@RequestHeader("Refresh-Token")String token) {
-        return reassignToken(token);
+    public TokenResponse reassignToken(@RequestHeader("Refresh-Token") String refreshToken) {
+        if (!jwtTokenProvider.validateToken(refreshToken)) {
+            throw UserNotFoundException.EXCEPTION;
+        }
+        String accountId = jwtTokenProvider.getSubject(refreshToken);
+        UserDetails userDetails;
+        try {
+            userDetails = userDetailsService.loadUserByUsername(accountId);
+        } catch (UsernameNotFoundException e) {
+            throw UserNotFoundException.EXCEPTION;
+        }
+        String newAccessToken = jwtTokenProvider.generateAccessToken(accountId);
+        TokenResponse response = TokenResponse.builder()
+                .accessToken(newAccessToken)
+                .refreshToken(refreshToken)
+                .build();
+
+        return response;
     }
 
     @DeleteMapping("/logout")
@@ -78,5 +93,5 @@ public class UserController {
     public void profileImage(@PathVariable String accountId, @RequestPart(value = "image", required = false) MultipartFile file) {
         userUtil.upload(accountId, file);
     }
-    
+
 }
