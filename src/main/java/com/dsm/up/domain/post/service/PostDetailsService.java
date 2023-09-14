@@ -27,6 +27,7 @@ public class PostDetailsService {
 
 		return PostResponse.builder()
 			.id(post.getId())
+			.accountId(post.getUser().getAccountId())
 			.userNickname(post.getUser().getNickname())
 			.profileImage(s3Util.getProfileImageUrl(post.getUser().getPath()))
 			.createDate(post.getCreateDate())

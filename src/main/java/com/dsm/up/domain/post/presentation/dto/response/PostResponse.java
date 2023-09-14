@@ -12,6 +12,7 @@ import lombok.Getter;
 public class PostResponse {
 
     private final Long id;
+    private final String accountId;
     private final String userNickname;
     private final String profileImage;
     private final String title;
@@ -24,8 +25,9 @@ public class PostResponse {
     private final String createDate;
 
     @Builder
-    private PostResponse(Long id, String userNickname, String profileImage, String title, String content, String file, String language, String  state, String major, List<CommentResponse> comments, String createDate) {
+    private PostResponse(Long id, String accountId, String userNickname, String profileImage, String title, String content, String file, String language, String  state, String major, List<CommentResponse> comments, String createDate) {
         this.id = id;
+        this.accountId = accountId;
         this.userNickname = userNickname;
         this.profileImage = profileImage;
         this.title = title;
