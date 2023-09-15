@@ -2,6 +2,7 @@ package com.dsm.up.domain.comment.presentation;
 
 import com.dsm.up.domain.comment.presentation.dto.request.CommentRequest;
 import com.dsm.up.domain.comment.service.CommentService;
+import com.dsm.up.domain.post.presentation.dto.response.ReturnIdResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +26,7 @@ public class CommentController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Long create(@RequestBody @Valid CommentRequest request) {
+    public ReturnIdResponse create(@RequestBody @Valid CommentRequest request) {
         return commentService.creat(request);
     }
 

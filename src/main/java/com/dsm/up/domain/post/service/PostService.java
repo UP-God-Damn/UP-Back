@@ -6,7 +6,7 @@ import com.dsm.up.domain.post.domain.type.MajorType;
 import com.dsm.up.domain.post.domain.type.StateType;
 import com.dsm.up.domain.post.exception.PostNotFoundException;
 import com.dsm.up.domain.post.presentation.dto.request.PostRequest;
-import com.dsm.up.domain.post.presentation.dto.response.ReturnPostIdResponse;
+import com.dsm.up.domain.post.presentation.dto.response.ReturnIdResponse;
 import com.dsm.up.domain.user.exception.UserNotMatchException;
 import com.dsm.up.domain.user.service.util.UserUtil;
 import com.dsm.up.global.aws.S3Util;
@@ -27,7 +27,7 @@ public class PostService {
     private final UserUtil userUtil;
 
     @Transactional
-    public ReturnPostIdResponse create(PostRequest request) {
+    public ReturnIdResponse create(PostRequest request) {
         Post post = postRepository.save(Post.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
@@ -37,7 +37,7 @@ public class PostService {
                 .user(userUtil.getUser())
                 .build());
 
-        return new ReturnPostIdResponse(post.getId());
+        return new ReturnIdResponse(post.getId());
     }
 
     @Transactional

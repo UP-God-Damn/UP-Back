@@ -7,6 +7,7 @@ import com.dsm.up.domain.comment.presentation.dto.request.CommentRequest;
 import com.dsm.up.domain.post.domain.Post;
 import com.dsm.up.domain.post.domain.repository.PostRepository;
 import com.dsm.up.domain.post.exception.PostNotFoundException;
+import com.dsm.up.domain.post.presentation.dto.response.ReturnIdResponse;
 import com.dsm.up.domain.user.exception.UserNotMatchException;
 import com.dsm.up.domain.user.service.util.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +22,16 @@ public class CommentService {
     private final UserUtil userUtil;
 
     @Transactional
-    public Long creat(CommentRequest request) {
+    public ReturnIdResponse creat(CommentRequest request) {
         Post post = postRepository.findById(request.getId())
                 .orElseThrow(() -> PostNotFoundException.EXCEPTION);
 
-        return commentRepository.save(Comment.builder()
+        Comment comment = commentRepository.save(Comment.builder()
                 .post(post)
                 .user(userUtil.getUser())
                 .content(request.getContent())
-                .build()).getId();
-
+                .build());
+        return new ReturnIdResponse(comment.getId());
     }
 
     @Transactional
