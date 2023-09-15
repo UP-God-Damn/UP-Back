@@ -11,10 +11,10 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PostRepository extends CrudRepository<Post, Long> {
 
-    Page<Post> findAllByTitleContainingOrderByCreateDateDesc(String title, Pageable pageable);
-    Page<Post> findAllByStateAndTitleContainingOrderByCreateDateDesc(StateType state, String title, Pageable pageable);
-    Page<Post> findAllByTitleContainingAndMajorOrderByCreateDateDesc(String title, MajorType major, Pageable pageable);
-    Page<Post> findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType state, String title, MajorType major, Pageable pageable);
-    Page<Post> findAllByUserOrderByCreateDateDesc(User user, Pageable pageable);
+    Page<Post> findAllByTitleContainingOrderByIdDesc(String title, Pageable pageable);
+    Page<Post> findAllByStateAndTitleContainingOrderByIdDesc(StateType state, String title, Pageable pageable);
+    Page<Post> findAllByTitleContainingAndMajorOrderByIdDesc(String title, MajorType major, Pageable pageable);
+    Page<Post> findAllByStateAndTitleContainingAndMajorOrderByIdDesc(StateType state, String title, MajorType major, Pageable pageable);
+    Page<Post> findAllByUserOrderByIdDesc(User user, Pageable pageable);
     long countByUser(User user);
 }

@@ -24,7 +24,7 @@ public class PostListService {
     private final S3Util s3Util;
 
     public PostListResponse getUserPostsPaged(Pageable pageable) {
-        Page<Post> posts = postRepository.findAllByUserOrderByCreateDateDesc(userUtil.getUser(), pageable);
+        Page<Post> posts = postRepository.findAllByUserOrderByIdDesc(userUtil.getUser(), pageable);
 
         return new PostListResponse(posts.getTotalPages(),
                 posts.stream().map(this::ofPostResponse).collect(Collectors.toList()));
@@ -34,13 +34,13 @@ public class PostListService {
         Page<Post> posts;
 
         if (state.isEmpty() && major.isEmpty())
-            posts = postRepository.findAllByTitleContainingOrderByCreateDateDesc(title, page);
+            posts = postRepository.findAllByTitleContainingOrderByIdDesc(title, page);
         else if (major.isEmpty())
-            posts = postRepository.findAllByStateAndTitleContainingOrderByCreateDateDesc(StateType.valueOf(state), title, page);
+            posts = postRepository.findAllByStateAndTitleContainingOrderByIdDesc(StateType.valueOf(state), title, page);
         else if (state.isEmpty())
-            posts = postRepository.findAllByTitleContainingAndMajorOrderByCreateDateDesc(title, MajorType.valueOf(major), page);
+            posts = postRepository.findAllByTitleContainingAndMajorOrderByIdDesc(title, MajorType.valueOf(major), page);
         else
-            posts = postRepository.findAllByStateAndTitleContainingAndMajorOrderByCreateDateDesc(StateType.valueOf(state), title, MajorType.valueOf(major), page);
+            posts = postRepository.findAllByStateAndTitleContainingAndMajorOrderByIdDesc(StateType.valueOf(state), title, MajorType.valueOf(major), page);
 
 
         return new PostListResponse(posts.getTotalPages(),
