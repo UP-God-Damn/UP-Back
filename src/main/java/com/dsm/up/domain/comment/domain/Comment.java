@@ -50,8 +50,7 @@ public class Comment {
         this.createDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy / MM / dd"));
     }
 
-    public Long update(String content) {
+    public void update(String content) {
         this.content = content;
-        return this.id;
     }
 }

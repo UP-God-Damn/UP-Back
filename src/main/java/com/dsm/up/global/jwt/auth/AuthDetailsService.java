@@ -1,5 +1,7 @@
 package com.dsm.up.global.jwt.auth;
+
 import com.dsm.up.domain.user.domain.repository.UserRepository;
+import com.dsm.up.domain.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,7 +17,7 @@ public class AuthDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String accountId) {
         return userRepository.findByAccountId(accountId)
                 .map(AuthDetails::new)
-                .orElseThrow(() -> new RuntimeException("USERNOTFOUND"));
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 }
 
