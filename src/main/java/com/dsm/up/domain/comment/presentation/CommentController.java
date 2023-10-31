@@ -31,7 +31,7 @@ public class CommentController {
     }
 
     @PatchMapping("/{id}")
-    public Long update(@PathVariable @NotNull Long id, @RequestBody @Valid CommentRequest request) {
+    public ReturnIdResponse update(@PathVariable @NotNull Long id, @RequestBody @Valid CommentRequest request) {
         return commentService.update(id, request);
     }
 

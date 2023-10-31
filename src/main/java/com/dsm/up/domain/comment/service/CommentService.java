@@ -35,12 +35,13 @@ public class CommentService {
     }
 
     @Transactional
-    public Long update(Long id, CommentRequest request) {
+    public ReturnIdResponse update(Long id, CommentRequest request) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> CommentNotFoundException.EXCEPTION);
         if(!comment.getUser().getAccountId().equals(userUtil.getUserId())) throw UserNotMatchException.EXCEPTION;
 
-        return comment.update(request.getContent());
+        comment.update(request.getContent());
+        return new ReturnIdResponse(comment.getId());
     }
 
     @Transactional
@@ -51,4 +52,5 @@ public class CommentService {
 
         commentRepository.delete(comment);
     }
+
 }
