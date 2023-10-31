@@ -1,6 +1,8 @@
 package com.dsm.up.domain.user.presentation.dto.response;
+
 import lombok.Builder;
 import lombok.Getter;
+
 @Getter
 public class TokenResponse {
 

@@ -1,4 +1,5 @@
 package com.dsm.up.global.jwt.auth;
+
 import com.dsm.up.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

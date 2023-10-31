@@ -7,12 +7,10 @@ import com.dsm.up.domain.user.domain.repository.UserRepository;
 import com.dsm.up.domain.user.exception.UserIdExistsException;
 import com.dsm.up.domain.user.presentation.dto.request.SignUpRequest;
 import com.dsm.up.domain.user.presentation.dto.response.TokenResponse;
-import com.dsm.up.global.aws.S3Util;
 import com.dsm.up.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
